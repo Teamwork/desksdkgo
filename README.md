@@ -59,18 +59,18 @@ func main() {
 
 The SDK supports the following resources:
 
-- **Tickets**: Manage support tickets
-- **Customers**: Manage customer information
+- **Business Hours**: Manage business hours
 - **Companies**: Manage company information
-- **Users**: Manage user accounts
+- **Customers**: Manage customer information
+- **Help Doc Articles**: Manage help documentation articles
+- **Help Doc Sites**: Manage help documentation sites
+- **SLAs**: Manage service level agreements
 - **Tags**: Manage ticket tags
+- **Ticket Priorities**: Manage ticket priorities
 - **Ticket Statuses**: Manage ticket statuses
 - **Ticket Types**: Manage ticket types
-- **Ticket Priorities**: Manage ticket priorities
-- **Help Doc Sites**: Manage help documentation sites
-- **Help Doc Articles**: Manage help documentation articles
-- **Business Hours**: Manage business hours
-- **SLAs**: Manage service level agreements
+- **Tickets**: Manage support tickets
+- **Users**: Manage user accounts
 
 Each resource supports the following operations:
 - `Get`: Retrieve a single resource by ID
