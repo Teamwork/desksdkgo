@@ -24,6 +24,7 @@ type Client struct {
 	HelpDocSites     *HelpDocSiteService
 	Inboxes          *InboxService
 	SLAs             *SLAService
+	Spamlists        *SpamlistService
 	Tags             *TagService
 	TicketPriorities *TicketPriorityService
 	Tickets          *TicketService
@@ -85,6 +86,7 @@ func NewClient(baseURL string, opts ...Option) *Client {
 	client.HelpDocSites = NewHelpDocSiteService(client)
 	client.Inboxes = NewInboxService(client)
 	client.SLAs = NewSLAService(client)
+	client.Spamlists = NewSpamlistService(client)
 	client.Tags = NewTagService(client)
 	client.TicketPriorities = NewTicketPriorityService(client)
 	client.Tickets = NewTicketService(client)

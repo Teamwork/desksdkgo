@@ -159,6 +159,17 @@ func main() {
 				}
 				return resp
 			})
+		case "spamlists":
+			api.Call(ctx, c.Spamlists, *action, *id, func() *models.SpamlistResponse {
+				resp := &models.SpamlistResponse{Spamlist: models.Spamlist{
+					Term: gofakeit.Email(),
+					Type: "blacklist",
+				}}
+				if jsonData != nil {
+					util.MergeJSONData(&resp.Spamlist, jsonData)
+				}
+				return resp
+			})
 		case "ticketstatuses":
 			api.Call(ctx, c.TicketStatuses, *action, *id, func() *models.TicketStatusResponse {
 				resp := &models.TicketStatusResponse{TicketStatus: models.TicketStatus{
