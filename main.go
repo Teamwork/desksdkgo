@@ -170,7 +170,7 @@ func main() {
 				}
 				return resp
 			})
-		case "ticketstatuses":
+		case "statuses":
 			api.Call(ctx, c.TicketStatuses, *action, *id, func() *models.TicketStatusResponse {
 				resp := &models.TicketStatusResponse{TicketStatus: models.TicketStatus{
 					Name: gofakeit.Word(),
@@ -180,7 +180,7 @@ func main() {
 				}
 				return resp
 			})
-		case "tickettypes":
+		case "types":
 			api.Call(ctx, c.TicketTypes, *action, *id, func() *models.TicketTypeResponse {
 				resp := &models.TicketTypeResponse{TicketType: models.TicketType{
 					Name: gofakeit.Word(),
@@ -190,7 +190,7 @@ func main() {
 				}
 				return resp
 			})
-		case "ticketpriorities":
+		case "priorities":
 			api.Call(ctx, c.TicketPriorities, *action, *id, func() *models.TicketPriorityResponse {
 				resp := &models.TicketPriorityResponse{TicketPriority: models.TicketPriority{
 					Name:  gofakeit.Word(),
