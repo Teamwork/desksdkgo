@@ -65,11 +65,42 @@ func main() {
 		}
 	}
 
+	resources := []string{*resource}
+	if *resource == "all" {
+		resources = []string{
+			"tags",
+			"spamlists",
+			"statuses",
+			"types",
+			"priorities",
+			"inboxes",
+			"companies",
+			"customers",
+			"businesshours",
+			"slas",
+			"tickets",
+		}
+	}
+
+	for _, resource := range resources {
+		generateData(ctx, c, resource, *action, *count, *id, jsonData)
+	}
+}
+
+func generateData(
+	ctx context.Context,
+	c *client.Client,
+	resource string,
+	action string,
+	count int,
+	id int,
+	jsonData map[string]any,
+) {
 	// Execute action based on resource and action
-	for range *count {
-		switch strings.ToLower(*resource) {
+	for range count {
+		switch strings.ToLower(resource) {
 		case "tickets":
-			api.Call(ctx, c.Tickets, *action, *id, func() *models.TicketResponse {
+			api.Call(ctx, c.Tickets, action, id, func() *models.TicketResponse {
 				inboxes, err := c.Inboxes.List(ctx, nil)
 				if err != nil {
 					log.Fatalf("Failed to list inboxes: %v", err)
@@ -92,7 +123,7 @@ func main() {
 				return resp
 			})
 		case "customers":
-			api.Call(ctx, c.Customers, *action, *id, func() *models.CustomerResponse {
+			api.Call(ctx, c.Customers, action, id, func() *models.CustomerResponse {
 				email := gofakeit.Email()
 				resp := &models.CustomerResponse{
 					Customer: models.Customer{
@@ -118,7 +149,7 @@ func main() {
 				return resp
 			})
 		case "companies":
-			api.Call(ctx, c.Companies, *action, *id, func() *models.CompanyResponse {
+			api.Call(ctx, c.Companies, action, id, func() *models.CompanyResponse {
 				resp := &models.CompanyResponse{
 					Company: models.Company{
 						Name:        gofakeit.Company(),
@@ -138,7 +169,7 @@ func main() {
 				return resp
 			})
 		case "users":
-			api.Call(ctx, c.Users, *action, *id, func() *models.UserResponse {
+			api.Call(ctx, c.Users, action, id, func() *models.UserResponse {
 				resp := &models.UserResponse{User: models.User{
 					FirstName: gofakeit.FirstName(),
 					LastName:  gofakeit.LastName(),
@@ -150,7 +181,7 @@ func main() {
 				return resp
 			})
 		case "tags":
-			api.Call(ctx, c.Tags, *action, *id, func() *models.TagResponse {
+			api.Call(ctx, c.Tags, action, id, func() *models.TagResponse {
 				resp := &models.TagResponse{Tag: models.Tag{
 					Name: gofakeit.Word(),
 				}}
@@ -160,7 +191,7 @@ func main() {
 				return resp
 			})
 		case "spamlists":
-			api.Call(ctx, c.Spamlists, *action, *id, func() *models.SpamlistResponse {
+			api.Call(ctx, c.Spamlists, action, id, func() *models.SpamlistResponse {
 				resp := &models.SpamlistResponse{Spamlist: models.Spamlist{
 					Term: gofakeit.Email(),
 					Type: "blacklist",
@@ -171,7 +202,7 @@ func main() {
 				return resp
 			})
 		case "statuses":
-			api.Call(ctx, c.TicketStatuses, *action, *id, func() *models.TicketStatusResponse {
+			api.Call(ctx, c.TicketStatuses, action, id, func() *models.TicketStatusResponse {
 				resp := &models.TicketStatusResponse{TicketStatus: models.TicketStatus{
 					Name: gofakeit.Word(),
 				}}
@@ -181,7 +212,7 @@ func main() {
 				return resp
 			})
 		case "types":
-			api.Call(ctx, c.TicketTypes, *action, *id, func() *models.TicketTypeResponse {
+			api.Call(ctx, c.TicketTypes, action, id, func() *models.TicketTypeResponse {
 				resp := &models.TicketTypeResponse{TicketType: models.TicketType{
 					Name: gofakeit.Word(),
 				}}
@@ -191,7 +222,7 @@ func main() {
 				return resp
 			})
 		case "priorities":
-			api.Call(ctx, c.TicketPriorities, *action, *id, func() *models.TicketPriorityResponse {
+			api.Call(ctx, c.TicketPriorities, action, id, func() *models.TicketPriorityResponse {
 				resp := &models.TicketPriorityResponse{TicketPriority: models.TicketPriority{
 					Name:  gofakeit.Word(),
 					Color: gofakeit.SafeColor(),
@@ -202,7 +233,7 @@ func main() {
 				return resp
 			})
 		case "helpdocsites":
-			api.Call(ctx, c.HelpDocSites, *action, *id, func() *models.HelpDocSiteResponse {
+			api.Call(ctx, c.HelpDocSites, action, id, func() *models.HelpDocSiteResponse {
 				resp := &models.HelpDocSiteResponse{HelpDocSite: models.HelpDocSite{
 					Name: gofakeit.Company() + " Help Center",
 				}}
@@ -212,7 +243,7 @@ func main() {
 				return resp
 			})
 		case "helpdocarticles":
-			api.Call(ctx, c.HelpDocArticles, *action, *id, func() *models.HelpDocArticleResponse {
+			api.Call(ctx, c.HelpDocArticles, action, id, func() *models.HelpDocArticleResponse {
 				resp := &models.HelpDocArticleResponse{HelpDocArticle: models.HelpDocArticle{
 					Title:    gofakeit.Sentence(5),
 					Contents: gofakeit.Paragraph(3, 5, 10, "\n"),
@@ -223,10 +254,10 @@ func main() {
 				return resp
 			})
 		case "businesshours":
-			api.Call(ctx, c.BusinessHours, *action, *id, func() *models.BusinessHourResponse {
+			api.Call(ctx, c.BusinessHours, action, id, func() *models.BusinessHourResponse {
 				resp := &models.BusinessHourResponse{BusinessHour: models.BusinessHour{
 					Name:      gofakeit.Company() + " Business Hours",
-					IsDefault: false,
+					IsDefault: true,
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.BusinessHour, jsonData)
@@ -235,7 +266,7 @@ func main() {
 			})
 
 		case "inboxes":
-			api.Call(ctx, c.Inboxes, *action, *id, func() *models.InboxResponse {
+			api.Call(ctx, c.Inboxes, action, id, func() *models.InboxResponse {
 				users, err := c.Users.List(ctx, nil)
 				if err != nil {
 					log.Fatalf("Failed to list users: %v", err)
@@ -267,7 +298,7 @@ func main() {
 				return resp
 			})
 		case "slas":
-			api.Call(ctx, c.SLAs, *action, *id, func() *models.SLAResponse {
+			api.Call(ctx, c.SLAs, action, id, func() *models.SLAResponse {
 				priorities, err := c.TicketPriorities.List(ctx, nil)
 				if err != nil {
 					log.Fatalf("Failed to list ticketpriorities: %v", err)
@@ -422,7 +453,7 @@ func main() {
 				return resp
 			})
 		default:
-			log.Fatalf("Unsupported resource: %s", *resource)
+			log.Fatalf("Unsupported resource: %s", resource)
 		}
 	}
 }
