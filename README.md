@@ -26,8 +26,8 @@ package main
 
 import (
     "context"
+    "log/slog"
     "github.com/teamwork/desksdkgo/client"
-    "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
     c := client.NewClient(
         "https://yourcompany.teamwork.com/desk/api/v2",
         client.WithAPIKey("your-api-key"), // Get this in your profile settings
-        client.WithLogLevel(logrus.DebugLevel),
+        client.WithLogLevel(slog.LevelDebug),
     )
 
     // Use the client

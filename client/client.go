@@ -2,18 +2,17 @@ package client
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strconv"
-
-	"github.com/sirupsen/logrus"
 )
 
 // Client represents the Desk API client
 type Client struct {
 	baseURL    string
 	apiKey     string
-	logLevel   logrus.Level
+	logLevel   slog.Level
 	httpClient *http.Client
 
 	// Services
@@ -58,7 +57,7 @@ func WithHTTPClient(httpClient *http.Client) Option {
 }
 
 // WithLogLevel sets the log level for the client
-func WithLogLevel(level logrus.Level) Option {
+func WithLogLevel(level slog.Level) Option {
 	return func(c *Client) {
 		c.logLevel = level
 	}

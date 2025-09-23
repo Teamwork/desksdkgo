@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"flag"
 	"log"
+	"log/slog"
 	"strconv"
 	"strings"
 
 	"github.com/brianvoe/gofakeit/v7"
-	"github.com/sirupsen/logrus"
 	"github.com/teamwork/desksdkgo/api"
 	"github.com/teamwork/desksdkgo/client"
 	"github.com/teamwork/desksdkgo/models"
@@ -48,7 +48,7 @@ func main() {
 	// Create client
 	opts := []client.Option{}
 	if *debug {
-		opts = append(opts, client.WithLogLevel(logrus.DebugLevel))
+		opts = append(opts, client.WithLogLevel(slog.LevelDebug))
 	}
 	opts = append(opts, client.WithAPIKey(*apiKey))
 

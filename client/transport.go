@@ -3,40 +3,39 @@ package client
 import (
 	"bytes"
 	"io"
+	"log/slog"
 	"net/http"
 	"time"
-
-	"github.com/sirupsen/logrus"
 )
 
 // LoggingTransport wraps an http.RoundTripper and logs the request and response
 type LoggingTransport struct {
 	Transport http.RoundTripper
-	Logger    *logrus.Logger
+	Logger    *slog.Logger
 }
 
 // RoundTrip implements the http.RoundTripper interface
 func (t *LoggingTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Log request
-	fields := logrus.Fields{
-		"method":  req.Method,
-		"url":     req.URL.String(),
-		"headers": req.Header,
+	attrs := []slog.Attr{
+		slog.String("method", req.Method),
+		slog.String("url", req.URL.String()),
+		slog.Any("headers", req.Header),
 	}
 
 	// Read and log request body if present
 	if req.Body != nil {
 		bodyBytes, err := io.ReadAll(req.Body)
 		if err != nil {
-			t.Logger.WithError(err).Error("Failed to read request body")
+			t.Logger.Error("Failed to read request body", slog.Any("error", err))
 		} else {
-			fields["request_body"] = string(bodyBytes)
+			attrs = append(attrs, slog.String("request_body", string(bodyBytes)))
 			// Restore the request body
 			req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 		}
 	}
 
-	t.Logger.WithFields(fields).Debug("HTTP Request")
+	t.Logger.LogAttrs(nil, slog.LevelDebug, "HTTP Request", attrs...)
 
 	// Make the request
 	start := time.Now()
@@ -44,36 +43,34 @@ func (t *LoggingTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 	duration := time.Since(start)
 
 	// Log response
-	respFields := logrus.Fields{
-		"status_code": resp.StatusCode,
-		"duration":    duration.String(),
-		"headers":     resp.Header,
+	respAttrs := []slog.Attr{
+		slog.Int("status_code", resp.StatusCode),
+		slog.String("duration", duration.String()),
+		slog.Any("headers", resp.Header),
 	}
 
 	// Read and log response body if present
 	if resp.Body != nil {
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
-			t.Logger.WithError(err).Error("Failed to read response body")
+			t.Logger.Error("Failed to read response body", slog.Any("error", err))
 		} else {
-			respFields["response_body"] = string(bodyBytes)
+			respAttrs = append(respAttrs, slog.String("response_body", string(bodyBytes)))
 			// Restore the response body
 			resp.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 		}
 	}
 
-	t.Logger.WithFields(respFields).Debug("HTTP Response")
+	t.Logger.LogAttrs(nil, slog.LevelDebug, "HTTP Response", respAttrs...)
 
 	return resp, err
 }
 
 // NewLoggingClient creates a new HTTP client with logging
-func NewLoggingClient(level logrus.Level) *http.Client {
-	logger := logrus.New()
-	logger.SetFormatter(&logrus.JSONFormatter{
-		PrettyPrint: true,
-	})
-	logger.SetLevel(level)
+func NewLoggingClient(level slog.Level) *http.Client {
+	logger := slog.New(slog.NewJSONHandler(nil, &slog.HandlerOptions{
+		Level: level,
+	}))
 
 	transport := &LoggingTransport{
 		Transport: http.DefaultTransport,
