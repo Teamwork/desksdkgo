@@ -15,6 +15,7 @@ type Client struct {
 	logLevel   slog.Level
 	logger     *slog.Logger
 	httpClient *http.Client
+	middleware []MiddlewareFunc
 
 	// Services
 	BusinessHours    *BusinessHourService
@@ -32,6 +33,9 @@ type Client struct {
 	TicketTypes      *TicketTypeService
 	Users            *UserService
 }
+
+type MiddlewareFunc func(ctx context.Context, next HandlerFunc) HandlerFunc
+type HandlerFunc func(c Client) error
 
 // Config represents the client configuration
 type Config struct {
@@ -71,6 +75,13 @@ func WithLogger(logger *slog.Logger) Option {
 	}
 }
 
+// WithMiddleware adds middleware to the client
+func WithMiddleware(mw MiddlewareFunc) Option {
+	return func(c *Client) {
+		c.middleware = append(c.middleware, mw)
+	}
+}
+
 // NewClient creates a new Desk.com API client
 func NewClient(baseURL string, opts ...Option) *Client {
 	client := &Client{
@@ -105,7 +116,7 @@ func NewClient(baseURL string, opts ...Option) *Client {
 }
 
 // doRequest performs an HTTP request with the client's configuration
-func (c *Client) doRequest(_ context.Context, req *http.Request) (*http.Response, error) {
+func (c *Client) doRequest(ctx context.Context, req *http.Request) (*http.Response, error) {
 	// Add API key if set
 	if c.apiKey != "" {
 		req.Header.Set("Authorization", "Bearer "+c.apiKey)
@@ -116,6 +127,21 @@ func (c *Client) doRequest(_ context.Context, req *http.Request) (*http.Response
 
 	// Add accept header
 	req.Header.Set("Accept", "application/json")
+
+	// Run the middleware chain
+	if len(c.middleware) > 0 {
+		var finalHandler HandlerFunc = func(c Client) error {
+			return nil
+		}
+
+		for i := len(c.middleware) - 1; i >= 0; i-- {
+			finalHandler = c.middleware[i](ctx, finalHandler)
+		}
+
+		if err := finalHandler(*c); err != nil {
+			return nil, err
+		}
+	}
 
 	return c.httpClient.Do(req)
 }
