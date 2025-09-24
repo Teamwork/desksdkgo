@@ -13,6 +13,7 @@ type Client struct {
 	baseURL    string
 	apiKey     string
 	logLevel   slog.Level
+	logger     *slog.Logger
 	httpClient *http.Client
 
 	// Services
@@ -63,6 +64,13 @@ func WithLogLevel(level slog.Level) Option {
 	}
 }
 
+// WithLogger sets a custom logger for the client
+func WithLogger(logger *slog.Logger) Option {
+	return func(c *Client) {
+		c.logger = logger
+	}
+}
+
 // NewClient creates a new Desk.com API client
 func NewClient(baseURL string, opts ...Option) *Client {
 	client := &Client{
@@ -74,7 +82,7 @@ func NewClient(baseURL string, opts ...Option) *Client {
 	}
 
 	if client.httpClient == nil {
-		client.httpClient = NewLoggingClient(client.logLevel)
+		client.httpClient = NewLoggingClientWithLogger(client.logLevel, client.logger)
 	}
 
 	// Initialize services

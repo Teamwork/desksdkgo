@@ -40,15 +40,52 @@ func main() {
 
     // Use the client
     ctx := context.Background()
-    
+
     // List tickets
     tickets, err := c.Tickets.List(ctx, nil)
     if err != nil {
         panic(err)
     }
-    
+
     // Get a specific ticket
     ticket, err := c.Tickets.Get(ctx, 123)
+    if err != nil {
+        panic(err)
+    }
+}
+```
+
+### Using a Custom Logger
+
+You can provide your own log/slog logger to the client:
+
+```go
+package main
+
+import (
+    "context"
+    "log/slog"
+    "os"
+    "github.com/teamwork/desksdkgo/client"
+)
+
+func main() {
+    // Create a custom logger
+    customLogger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+        Level: slog.LevelInfo,
+        AddSource: true,
+    }))
+
+    // Create client with custom logger
+    c := client.NewClient(
+        "https://yourcompany.teamwork.com/desk/api/v2",
+        client.WithAPIKey("your-api-key"),
+        client.WithLogger(customLogger), // Use your custom logger
+    )
+
+    // The client will now use your custom logger for all HTTP request/response logging
+    ctx := context.Background()
+    tickets, err := c.Tickets.List(ctx, nil)
     if err != nil {
         panic(err)
     }
@@ -73,6 +110,7 @@ The SDK supports the following resources:
 - **Users**: Manage user accounts
 
 Each resource supports the following operations:
+
 - `Get`: Retrieve a single resource by ID
 - `List`: Retrieve a list of resources with optional filters
 - `Create`: Create a new resource
@@ -109,6 +147,7 @@ The CLI supports the following configuration options:
 - `--data`: JSON data to merge with default values for create/update actions
 
 All configuration options can be set in multiple ways, in order of precedence:
+
 1. Command-line flags
 2. Environment variables
 3. `.env` file
@@ -116,6 +155,7 @@ All configuration options can be set in multiple ways, in order of precedence:
 #### Environment Variables
 
 The following environment variables are supported:
+
 - `DESK_API_KEY`
 - `DESK_BASE_URL`
 - `DESK_RESOURCE`
@@ -134,6 +174,7 @@ cp .env.example .env
 ```
 
 Example `.env` file:
+
 ```env
 # Desk API Configuration
 DESK_API_KEY=your_api_key_here
@@ -163,6 +204,7 @@ tickets, err := c.Tickets.List(ctx, filter.Build())
 ```
 
 Available filter operators:
+
 - `$eq`: Equal to
 - `$ne`: Not equal to
 - `$lt`: Less than
@@ -176,4 +218,4 @@ Available filter operators:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.

@@ -68,9 +68,16 @@ func (t *LoggingTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 
 // NewLoggingClient creates a new HTTP client with logging
 func NewLoggingClient(level slog.Level) *http.Client {
-	logger := slog.New(slog.NewJSONHandler(nil, &slog.HandlerOptions{
-		Level: level,
-	}))
+	return NewLoggingClientWithLogger(level, nil)
+}
+
+// NewLoggingClientWithLogger creates a new HTTP client with logging using a custom logger
+func NewLoggingClientWithLogger(level slog.Level, logger *slog.Logger) *http.Client {
+	if logger == nil {
+		logger = slog.New(slog.NewJSONHandler(nil, &slog.HandlerOptions{
+			Level: level,
+		}))
+	}
 
 	transport := &LoggingTransport{
 		Transport: http.DefaultTransport,
