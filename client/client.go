@@ -34,8 +34,11 @@ type Client struct {
 	Users            *UserService
 }
 
-type MiddlewareFunc func(ctx context.Context, next HandlerFunc) HandlerFunc
-type HandlerFunc func(c Client) error
+// MiddlewareFunc represents a middleware function that can modify requests before they are sent
+type MiddlewareFunc func(ctx context.Context, req *http.Request, next RequestHandler) (*http.Response, error)
+
+// RequestHandler represents the function that executes the actual HTTP request
+type RequestHandler func(ctx context.Context, req *http.Request) (*http.Response, error)
 
 // Config represents the client configuration
 type Config struct {
@@ -128,22 +131,20 @@ func (c *Client) doRequest(ctx context.Context, req *http.Request) (*http.Respon
 	// Add accept header
 	req.Header.Set("Accept", "application/json")
 
-	// Run the middleware chain
-	if len(c.middleware) > 0 {
-		var finalHandler HandlerFunc = func(c Client) error {
-			return nil
-		}
+	finalHandler := func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return c.httpClient.Do(req)
+	}
 
-		for i := len(c.middleware) - 1; i >= 0; i-- {
-			finalHandler = c.middleware[i](ctx, finalHandler)
-		}
-
-		if err := finalHandler(*c); err != nil {
-			return nil, err
+	handler := finalHandler
+	for i := len(c.middleware) - 1; i >= 0; i-- {
+		middleware := c.middleware[i]
+		next := handler
+		handler = func(ctx context.Context, req *http.Request) (*http.Response, error) {
+			return middleware(ctx, req, next)
 		}
 	}
 
-	return c.httpClient.Do(req)
+	return handler(ctx, req)
 }
 
 // ListOptions represents options for list operations
