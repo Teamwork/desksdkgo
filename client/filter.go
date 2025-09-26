@@ -26,67 +26,67 @@ const (
 
 // FilterBuilder helps build MongoDB-style filters
 type FilterBuilder struct {
-	filter map[string]interface{}
+	filter map[string]any
 }
 
 // NewFilter creates a new FilterBuilder
 func NewFilter() *FilterBuilder {
 	return &FilterBuilder{
-		filter: make(map[string]interface{}),
+		filter: make(map[string]any),
 	}
 }
 
 // Eq adds an equality condition
-func (f *FilterBuilder) Eq(field string, value interface{}) *FilterBuilder {
+func (f *FilterBuilder) Eq(field string, value any) *FilterBuilder {
 	f.addCondition(field, OpEq, value)
 	return f
 }
 
 // Ne adds a not-equal condition
-func (f *FilterBuilder) Ne(field string, value interface{}) *FilterBuilder {
+func (f *FilterBuilder) Ne(field string, value any) *FilterBuilder {
 	f.addCondition(field, OpNe, value)
 	return f
 }
 
 // Lt adds a less-than condition
-func (f *FilterBuilder) Lt(field string, value interface{}) *FilterBuilder {
+func (f *FilterBuilder) Lt(field string, value any) *FilterBuilder {
 	f.addCondition(field, OpLt, value)
 	return f
 }
 
 // Lte adds a less-than-or-equal condition
-func (f *FilterBuilder) Lte(field string, value interface{}) *FilterBuilder {
+func (f *FilterBuilder) Lte(field string, value any) *FilterBuilder {
 	f.addCondition(field, OpLte, value)
 	return f
 }
 
 // Gt adds a greater-than condition
-func (f *FilterBuilder) Gt(field string, value interface{}) *FilterBuilder {
+func (f *FilterBuilder) Gt(field string, value any) *FilterBuilder {
 	f.addCondition(field, OpGt, value)
 	return f
 }
 
 // Gte adds a greater-than-or-equal condition
-func (f *FilterBuilder) Gte(field string, value interface{}) *FilterBuilder {
+func (f *FilterBuilder) Gte(field string, value any) *FilterBuilder {
 	f.addCondition(field, OpGte, value)
 	return f
 }
 
 // In adds an in-list condition
-func (f *FilterBuilder) In(field string, values ...interface{}) *FilterBuilder {
+func (f *FilterBuilder) In(field string, values []any) *FilterBuilder {
 	f.addCondition(field, OpIn, values)
 	return f
 }
 
 // Nin adds a not-in-list condition
-func (f *FilterBuilder) Nin(field string, values ...interface{}) *FilterBuilder {
+func (f *FilterBuilder) Nin(field string, values []any) *FilterBuilder {
 	f.addCondition(field, OpNin, values)
 	return f
 }
 
 // And adds an AND condition
 func (f *FilterBuilder) And(filters ...*FilterBuilder) *FilterBuilder {
-	conditions := make([]map[string]interface{}, len(filters))
+	conditions := make([]map[string]any, len(filters))
 	for i, filter := range filters {
 		conditions[i] = filter.filter
 	}
@@ -96,7 +96,7 @@ func (f *FilterBuilder) And(filters ...*FilterBuilder) *FilterBuilder {
 
 // Or adds an OR condition
 func (f *FilterBuilder) Or(filters ...*FilterBuilder) *FilterBuilder {
-	conditions := make([]map[string]interface{}, len(filters))
+	conditions := make([]map[string]any, len(filters))
 	for i, filter := range filters {
 		conditions[i] = filter.filter
 	}
@@ -115,9 +115,9 @@ func (f *FilterBuilder) Build() string {
 }
 
 // addCondition adds a condition to the filter
-func (f *FilterBuilder) addCondition(field string, op FilterOperator, value interface{}) {
+func (f *FilterBuilder) addCondition(field string, op FilterOperator, value any) {
 	if _, exists := f.filter[field]; !exists {
-		f.filter[field] = make(map[string]interface{})
+		f.filter[field] = make(map[string]any)
 	}
-	f.filter[field].(map[string]interface{})[string(op)] = value
+	f.filter[field].(map[string]any)[string(op)] = value
 }
