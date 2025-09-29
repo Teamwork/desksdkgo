@@ -15,7 +15,7 @@ type CustomerService struct {
 // NewCustomerService creates a new customer service
 func NewCustomerService(client *Client) *CustomerService {
 	return &CustomerService{
-		Service: NewService[models.CustomerResponse, models.CustomersResponse](client, "customers"),
+		Service: NewService[models.CustomerResponse, models.CustomersResponse](client, NewDefaultPathHandler("customers")),
 	}
 }
 

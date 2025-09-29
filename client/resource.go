@@ -12,22 +12,29 @@ import (
 
 // Service handles generic resource operations
 type Service[T any, L any] struct {
-	client   *Client
-	resource string
+	client *Client
+	router PathHandler
+}
+
+type PathHandler interface {
+	Get(id int) string
+	List() string
+	Create() string
+	Update(id int) string
 }
 
 // NewService creates a new generic service
-func NewService[T any, L any](client *Client, resource string) *Service[T, L] {
+func NewService[T any, L any](client *Client, router PathHandler) *Service[T, L] {
 	return &Service[T, L]{
-		client:   client,
-		resource: resource,
+		client: client,
+		router: router,
 	}
 }
 
 // Get retrieves a resource by ID
 func (s *Service[T, L]) Get(ctx context.Context, id int) (*T, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		fmt.Sprintf("%s/%s/%d.json?includes=all", s.client.baseURL, s.resource, id), nil)
+		fmt.Sprintf("%s/%s.json?includes=all", s.client.baseURL, s.router.Get(id)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +60,7 @@ func (s *Service[T, L]) Get(ctx context.Context, id int) (*T, error) {
 // List retrieves a list of resources with optional filters
 func (s *Service[T, L]) List(ctx context.Context, params url.Values) (*L, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		fmt.Sprintf("%s/%s.json?%s", s.client.baseURL, s.resource, params.Encode()), nil)
+		fmt.Sprintf("%s/%s.json?%s", s.client.baseURL, s.router.List(), params.Encode()), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +91,7 @@ func (s *Service[T, L]) Create(ctx context.Context, resource *T) (*T, error) {
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		fmt.Sprintf("%s/%s.json", s.client.baseURL, s.resource), bytes.NewBuffer(body))
+		fmt.Sprintf("%s/%s.json", s.client.baseURL, s.router.Create()), bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +127,7 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPut,
-		fmt.Sprintf("%s/%s/%d.json", s.client.baseURL, s.resource, id), bytes.NewBuffer(body))
+		fmt.Sprintf("%s/%s.json", s.client.baseURL, s.router.Update(id)), bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}

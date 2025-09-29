@@ -15,7 +15,7 @@ type TicketPriorityService struct {
 // NewTicketPriorityService creates a new ticket service
 func NewTicketPriorityService(client *Client) *TicketPriorityService {
 	return &TicketPriorityService{
-		Service: NewService[models.TicketPriorityResponse, models.TicketPrioritiesResponse](client, "ticketpriorities"),
+		Service: NewService[models.TicketPriorityResponse, models.TicketPrioritiesResponse](client, NewDefaultPathHandler("ticketpriorities")),
 	}
 }
 

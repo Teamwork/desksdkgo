@@ -15,7 +15,7 @@ type BusinessHourService struct {
 // NewBusinessHourService creates a new ticket service
 func NewBusinessHourService(client *Client) *BusinessHourService {
 	return &BusinessHourService{
-		Service: NewService[models.BusinessHourResponse, models.BusinessHoursResponse](client, "businesshours"),
+		Service: NewService[models.BusinessHourResponse, models.BusinessHoursResponse](client, NewDefaultPathHandler("businesshours")),
 	}
 }
 

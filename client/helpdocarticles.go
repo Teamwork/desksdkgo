@@ -15,7 +15,7 @@ type HelpDocArticleService struct {
 // NewHelpDocArticleService creates a new help doc article service
 func NewHelpDocArticleService(client *Client) *HelpDocArticleService {
 	return &HelpDocArticleService{
-		Service: NewService[models.HelpDocArticleResponse, models.HelpDocArticlesResponse](client, "helpdocssites/helpdocarticles"),
+		Service: NewService[models.HelpDocArticleResponse, models.HelpDocArticlesResponse](client, NewDefaultPathHandler("helpdocssites/helpdocarticles")),
 	}
 }
 

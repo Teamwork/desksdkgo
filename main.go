@@ -6,6 +6,7 @@ import (
 	"flag"
 	"log"
 	"log/slog"
+	"os"
 	"strconv"
 	"strings"
 
@@ -68,17 +69,17 @@ func main() {
 	resources := []string{*resource}
 	if *resource == "all" {
 		resources = []string{
-			"tags",
-			"spamlists",
-			"statuses",
-			"types",
-			"priorities",
-			"inboxes",
+			"businesshours",
 			"companies",
 			"customers",
-			"businesshours",
+			"inboxes",
+			"priorities",
 			"slas",
+			"spamlists",
+			"statuses",
+			"tags",
 			"tickets",
+			"types",
 		}
 	}
 
@@ -190,6 +191,30 @@ func generateData(
 				}
 				return resp
 			})
+		case "files":
+			enc := json.NewEncoder(os.Stdout)
+			enc.SetIndent("", "  ")
+			f := &models.FileResponse{File: models.File{
+				Filename:    gofakeit.LoremIpsumWord() + "." + gofakeit.FileExtension(),
+				MIMEType:    "image/jpeg",
+				Type:        models.FileTypeAttachment,
+				Disposition: models.DispositionAttachment,
+			}}
+			if jsonData != nil {
+				util.MergeJSONData(&f.File, jsonData)
+			}
+
+			resp, err := c.Files.Create(ctx, f)
+			if err != nil {
+				log.Fatalf("Failed to create file reference: %v", err)
+			}
+
+			err = c.Files.Upload(ctx, resp, []byte(gofakeit.ImageJpeg(800, 600)))
+			if err != nil {
+				log.Fatalf("Failed to upload file: %v", err)
+			}
+
+			enc.Encode(resp)
 		case "spamlists":
 			api.Call(ctx, c.Spamlists, action, id, func() *models.SpamlistResponse {
 				resp := &models.SpamlistResponse{Spamlist: models.Spamlist{
