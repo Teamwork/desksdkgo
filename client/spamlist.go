@@ -15,7 +15,7 @@ type SpamlistService struct {
 // NewSpamlistService creates a new spamlist service
 func NewSpamlistService(client *Client) *SpamlistService {
 	return &SpamlistService{
-		Service: NewService[models.SpamlistResponse, models.SpamlistsResponse](client, "spamlists"),
+		Service: NewService[models.SpamlistResponse, models.SpamlistsResponse](client, NewDefaultPathHandler("spamlists")),
 	}
 }
 

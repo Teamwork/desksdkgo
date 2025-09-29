@@ -15,7 +15,7 @@ type TicketService struct {
 // NewTicketService creates a new ticket service
 func NewTicketService(client *Client) *TicketService {
 	return &TicketService{
-		Service: NewService[models.TicketResponse, models.TicketsResponse](client, "tickets"),
+		Service: NewService[models.TicketResponse, models.TicketsResponse](client, NewDefaultPathHandler("tickets")),
 	}
 }
 

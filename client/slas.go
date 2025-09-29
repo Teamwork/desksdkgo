@@ -15,7 +15,7 @@ type SLAService struct {
 // NewSLAService creates a new ticket service
 func NewSLAService(client *Client) *SLAService {
 	return &SLAService{
-		Service: NewService[models.SLAResponse, models.SLAsResponse](client, "slas"),
+		Service: NewService[models.SLAResponse, models.SLAsResponse](client, NewDefaultPathHandler("slas")),
 	}
 }
 

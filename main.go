@@ -68,17 +68,17 @@ func main() {
 	resources := []string{*resource}
 	if *resource == "all" {
 		resources = []string{
-			"tags",
-			"spamlists",
-			"statuses",
-			"types",
-			"priorities",
-			"inboxes",
+			"businesshours",
 			"companies",
 			"customers",
-			"businesshours",
+			"inboxes",
+			"priorities",
 			"slas",
+			"spamlists",
+			"statuses",
+			"tags",
 			"tickets",
+			"types",
 		}
 	}
 
@@ -187,6 +187,18 @@ func generateData(
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.Tag, jsonData)
+				}
+				return resp
+			})
+		case "files":
+			api.Call(ctx, c.Files, action, id, func() *models.FileResponse {
+				resp := &models.FileResponse{File: models.File{
+					Filename: gofakeit.LoremIpsumWord() + "." + gofakeit.FileExtension(),
+					MIMEType: "application/octet-stream",
+					Type:     models.FileTypeAttachment,
+				}}
+				if jsonData != nil {
+					util.MergeJSONData(&resp.File, jsonData)
 				}
 				return resp
 			})

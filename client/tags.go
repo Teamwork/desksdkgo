@@ -15,7 +15,7 @@ type TagService struct {
 // NewTagService creates a new ticket service
 func NewTagService(client *Client) *TagService {
 	return &TagService{
-		Service: NewService[models.TagResponse, models.TagsResponse](client, "tags"),
+		Service: NewService[models.TagResponse, models.TagsResponse](client, NewDefaultPathHandler("tags")),
 	}
 }
 

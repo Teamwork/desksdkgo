@@ -15,7 +15,7 @@ type UserService struct {
 // NewUserService creates a new user service
 func NewUserService(client *Client) *UserService {
 	return &UserService{
-		Service: NewService[models.UserResponse, models.UsersResponse](client, "users"),
+		Service: NewService[models.UserResponse, models.UsersResponse](client, NewDefaultPathHandler("users")),
 	}
 }
 

@@ -21,6 +21,7 @@ type Client struct {
 	BusinessHours    *BusinessHourService
 	Companies        *CompanyService
 	Customers        *CustomerService
+	Files            *FileService
 	HelpDocArticles  *HelpDocArticleService
 	HelpDocSites     *HelpDocSiteService
 	Inboxes          *InboxService
@@ -103,6 +104,7 @@ func NewClient(baseURL string, opts ...Option) *Client {
 	client.BusinessHours = NewBusinessHourService(client)
 	client.Companies = NewCompanyService(client)
 	client.Customers = NewCustomerService(client)
+	client.Files = NewFileService(client)
 	client.HelpDocArticles = NewHelpDocArticleService(client)
 	client.HelpDocSites = NewHelpDocSiteService(client)
 	client.Inboxes = NewInboxService(client)

@@ -15,7 +15,7 @@ type CompanyService struct {
 // NewCompanyService creates a new company service
 func NewCompanyService(client *Client) *CompanyService {
 	return &CompanyService{
-		Service: NewService[models.CompanyResponse, models.CompaniesResponse](client, "companies"),
+		Service: NewService[models.CompanyResponse, models.CompaniesResponse](client, NewDefaultPathHandler("companies")),
 	}
 }
 
