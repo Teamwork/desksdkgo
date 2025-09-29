@@ -193,9 +193,10 @@ func generateData(
 		case "files":
 			api.Call(ctx, c.Files, action, id, func() *models.FileResponse {
 				resp := &models.FileResponse{File: models.File{
-					Filename: gofakeit.LoremIpsumWord() + "." + gofakeit.FileExtension(),
-					MIMEType: "application/octet-stream",
-					Type:     models.FileTypeAttachment,
+					Filename:    gofakeit.LoremIpsumWord() + "." + gofakeit.FileExtension(),
+					MIMEType:    "application/octet-stream",
+					Type:        models.FileTypeAttachment,
+					Disposition: models.DispositionAttachment,
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.File, jsonData)
