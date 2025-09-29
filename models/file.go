@@ -30,15 +30,29 @@ type File struct {
 	Type FileType `json:"type"`
 }
 
-type FileResponse struct {
-	Action string            `bson:"url" json:"url"`
-	Params map[string]string `bson:"params" json:"params"`
-	File   File              `bson:"file" json:"file"`
-}
-
 type FilesResponse struct {
 	Files      []File       `json:"files"`
 	Included   IncludedData `json:"included"`
 	Pagination Pagination   `json:"pagination"`
 	Meta       Meta         `json:"meta"`
+}
+
+// RefResponse is the data gotten back from the /files/ref endpoint to then post
+// to s3
+type FileResponse struct {
+	URL    string     `json:"url"`
+	Params FileParams `json:"params"`
+	File   File       `json:"file"`
+}
+
+type FileParams struct {
+	ContentType         string `json:"Content-Type"`
+	Bucket              string `json:"bucket"`
+	Key                 string `json:"key"`
+	Policy              string `json:"policy"`
+	SuccessActionStatus string `json:"success_action_status"`
+	XAmzAlgorithm       string `json:"x-amz-algorithm"`
+	XAmzCredential      string `json:"x-amz-credential"`
+	XAmzDate            string `json:"x-amz-date"`
+	XAmzSignature       string `json:"x-amz-signature"`
 }
