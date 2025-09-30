@@ -11,10 +11,10 @@ type TicketType struct {
 }
 
 type TicketTypesResponse struct {
-	TicketTypes []TicketStatus `json:"tickettypes"`
-	Meta        Meta           `json:"meta"`
-	Pagination  Pagination     `json:"pagination"`
-	Included    IncludedData   `json:"included"`
+	TicketTypes []TicketType `json:"tickettypes"`
+	Meta        Meta         `json:"meta"`
+	Pagination  Pagination   `json:"pagination"`
+	Included    IncludedData `json:"included"`
 }
 
 type TicketTypeResponse struct {

@@ -7,6 +7,7 @@ type Ticket struct {
 	BaseEntity
 	Activities            []EntityRef `json:"activities"`
 	Agent                 EntityRef   `json:"agent"`
+	Body                  string      `json:"message"`
 	Contact               EntityRef   `json:"contact"`
 	Customer              EntityRef   `json:"customer"`
 	HappinessSurveySentAt time.Time   `json:"happinessSurveySentAt"`
