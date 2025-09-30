@@ -110,12 +110,90 @@ func generateData(
 				if len(inboxes.Inboxes) == 0 {
 					log.Fatal("No inboxes found. Please create an inbox first.")
 				}
+
+				customers, err := c.Customers.List(ctx, nil)
+				if err != nil {
+					log.Fatalf("Failed to list customers: %v", err)
+				}
+
+				if len(customers.Customers) == 0 {
+					log.Fatal("No customers found. Please create a customer first.")
+				}
+
+				types, err := c.TicketTypes.List(ctx, nil)
+				if err != nil {
+					log.Fatalf("Failed to list ticket types: %v", err)
+				}
+
+				var t models.TicketType
+				for _, tt := range types.TicketTypes {
+					for _, ibx := range inboxes.Inboxes {
+						for _, ttibx := range tt.Inboxes {
+							if ttibx.ID == ibx.ID {
+								t = tt
+								break
+							}
+						}
+					}
+				}
+
+				if t.ID == 0 {
+					log.Fatal("No ticket types associated with the available inboxes.")
+				}
+
+				if len(types.TicketTypes) == 0 {
+					log.Fatal("No ticket types found. Please create a ticket type first.")
+				}
+
+				sources, err := c.TicketSources.List(ctx, nil)
+				if err != nil {
+					log.Fatalf("Failed to list ticket sources: %v", err)
+				}
+
+				if len(sources.TicketSources) == 0 {
+					log.Fatal("No ticket sources found. Please create a ticket source first.")
+				}
+
+				statuses, err := c.TicketStatuses.List(ctx, nil)
+				if err != nil {
+					log.Fatalf("Failed to list ticket statuses: %v", err)
+				}
+
+				if len(statuses.TicketStatuses) == 0 {
+					log.Fatal("No ticket statuses found. Please create a ticket status first.")
+				}
+
+				agents, err := c.Users.List(ctx, nil)
+				if err != nil {
+					log.Fatalf("Failed to list users: %v", err)
+				}
+
+				if len(agents.Users) == 0 {
+					log.Fatal("No users found. Please create a user first.")
+				}
+
 				resp := &models.TicketResponse{Ticket: models.Ticket{
-					Subject:           gofakeit.Sentence(5),
+					Subject:           gofakeit.Sentence(1),
 					PreviewText:       gofakeit.Paragraph(1, 2, 3, " "),
 					OriginalRecipient: gofakeit.Email(),
 					Inbox: models.EntityRef{
 						ID: inboxes.Inboxes[0].ID,
+					},
+					Customer: models.EntityRef{
+						ID: customers.Customers[0].ID,
+					},
+					Body: gofakeit.Paragraph(3, 5, 10, "\n"),
+					Source: models.EntityRef{
+						ID: sources.TicketSources[0].ID,
+					},
+					Type: models.EntityRef{
+						ID: t.ID,
+					},
+					Status: models.EntityRef{
+						ID: statuses.TicketStatuses[0].ID,
+					},
+					Agent: models.EntityRef{
+						ID: agents.Users[0].ID,
 					},
 				}}
 				if jsonData != nil {

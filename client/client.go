@@ -30,6 +30,7 @@ type Client struct {
 	Tags             *TagService
 	TicketPriorities *TicketPriorityService
 	Tickets          *TicketService
+	TicketSources    *TicketSourceService
 	TicketStatuses   *TicketStatusService
 	TicketTypes      *TicketTypeService
 	Users            *UserService
@@ -113,6 +114,7 @@ func NewClient(baseURL string, opts ...Option) *Client {
 	client.Tags = NewTagService(client)
 	client.TicketPriorities = NewTicketPriorityService(client)
 	client.Tickets = NewTicketService(client)
+	client.TicketSources = NewTicketSourceService(client)
 	client.TicketStatuses = NewTicketStatusService(client)
 	client.TicketTypes = NewTicketTypeService(client)
 	client.Users = NewUserService(client)
