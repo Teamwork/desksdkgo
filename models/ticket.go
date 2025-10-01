@@ -22,6 +22,7 @@ type Ticket struct {
 	NotifyCustomer        bool        `json:"notifyCustomer"`
 	OriginalRecipient     string      `json:"originalRecipient"`
 	PreviewText           string      `json:"previewText"`
+	Priority              EntityRef   `json:"priority"`
 	Readonly              bool        `json:"readonly"`
 	ResolutionTimeMins    int         `json:"resolutionTimeMins"`
 	ResponseTimeMins      int         `json:"responseTimeMins"`
