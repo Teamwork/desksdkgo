@@ -6,13 +6,13 @@ import "time"
 type Ticket struct {
 	BaseEntity
 	Activities            []EntityRef `json:"activities"`
-	Agent                 EntityRef   `json:"agent"`
+	Agent                 *EntityRef  `json:"agent,omitempty"`
 	BCC                   []string    `json:"bcc"`
 	Body                  string      `json:"message"`
 	CC                    []string    `json:"cc"`
-	Contact               EntityRef   `json:"contact"`
+	Contact               *EntityRef  `json:"contact,omitempty"`
 	Customer              EntityRef   `json:"customer"`
-	Files                 []EntityRef `json:"files"`
+	Files                 []EntityRef `json:"files,omitempty"`
 	HappinessSurveySentAt time.Time   `json:"happinessSurveySentAt"`
 	ImagesHidden          bool        `json:"imagesHidden"`
 	Inbox                 EntityRef   `json:"inbox"`
@@ -22,19 +22,19 @@ type Ticket struct {
 	NotifyCustomer        bool        `json:"notifyCustomer"`
 	OriginalRecipient     string      `json:"originalRecipient"`
 	PreviewText           string      `json:"previewText"`
-	Priority              EntityRef   `json:"priority"`
+	Priority              *EntityRef  `json:"priority,omitempty"`
 	Readonly              bool        `json:"readonly"`
 	ResolutionTimeMins    int         `json:"resolutionTimeMins"`
 	ResponseTimeMins      int         `json:"responseTimeMins"`
-	Source                EntityRef   `json:"source"`
+	Source                *EntityRef  `json:"source,omitempty"`
 	SpamRules             any         `json:"spam_rules"`
 	SpamScore             int         `json:"spam_score"`
-	Status                EntityRef   `json:"status"`
+	Status                *EntityRef  `json:"status,omitempty"`
 	Subject               string      `json:"subject"`
 	Suggestions           struct{}    `json:"suggestions"`
 	Tags                  []EntityRef `json:"tags"`
 	Timelogs              []EntityRef `json:"timelogs"`
-	Type                  EntityRef   `json:"type"`
+	Type                  *EntityRef  `json:"type,omitempty"`
 }
 
 // Response types for tickets

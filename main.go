@@ -183,18 +183,6 @@ func generateData(
 						ID: customers.Customers[0].ID,
 					},
 					Body: gofakeit.Paragraph(3, 5, 10, "\n"),
-					Source: models.EntityRef{
-						ID: sources.TicketSources[0].ID,
-					},
-					Type: models.EntityRef{
-						ID: t.ID,
-					},
-					Status: models.EntityRef{
-						ID: statuses.TicketStatuses[0].ID,
-					},
-					Agent: models.EntityRef{
-						ID: agents.Users[0].ID,
-					},
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.Ticket, jsonData)
