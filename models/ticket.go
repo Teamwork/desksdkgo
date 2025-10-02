@@ -13,7 +13,7 @@ type Ticket struct {
 	Contact               *EntityRef  `json:"contact,omitempty"`
 	Customer              EntityRef   `json:"customer"`
 	Files                 []EntityRef `json:"files,omitempty"`
-	HappinessSurveySentAt time.Time   `json:"happinessSurveySentAt"`
+	HappinessSurveySentAt *time.Time  `json:"happinessSurveySentAt"`
 	ImagesHidden          bool        `json:"imagesHidden"`
 	Inbox                 EntityRef   `json:"inbox"`
 	IsRead                bool        `json:"isRead"`
@@ -64,7 +64,7 @@ type SearchTicketsFilter struct {
 	Companies             []int64            `qs:"companies"`
 	Customers             []int64            `qs:"customers"`
 	CustomFields          CustomFieldsSearch `qs:"customfields"`
-	EndDate               time.Time          `qs:"endDate"`
+	EndDate               *time.Time         `qs:"endDate,omitempty"`
 	Exact                 bool               `qs:"exact"`
 	ExcludeInboxes        []int64            `qs:"excludeInboxes"`
 	ExcludeTags           []int64            `qs:"excludeTags"`
@@ -73,27 +73,25 @@ type SearchTicketsFilter struct {
 	HelpdocSites          []int64            `qs:"helpdocSites"`
 	Inboxes               []int64            `qs:"inboxes"`
 	IncludeArchivedAgents bool               `qs:"includeArchivedAgents"`
-	LastUpdated           time.Time          `qs:"lastUpdated"`
+	LastUpdated           *time.Time         `qs:"lastUpdated,omitempty"`
 	OmitMerged            bool               `qs:"omitMerged"`
 	OnlyUntagged          bool               `qs:"onlyUntagged"`
 	OnlyWithAttachment    bool               `qs:"onlyWithAttachment"`
 	Priorities            []int64            `qs:"priorities"`
-	ProjectID             int64              `qs:"project"`
+	ProjectID             *int64             `qs:"project,omitempty"`
 	RequireAllTags        bool               `qs:"tagRequireAll"`
 	Search                string             `qs:"search"`
 	Sources               []int64            `qs:"sources"`
-	StartDate             time.Time          `qs:"startDate"`
+	StartDate             *time.Time         `qs:"startDate,omitempty"`
 	Statuses              []int64            `qs:"statuses"`
 	SubjectKeywords       []string           `qs:"subjectKeywords"`
 	Tags                  []int64            `qs:"tags"`
 	TaskID                int64              `qs:"task"`
 	TaskStatuses          []string           `qs:"taskStatuses"`
 	Teams                 []int64            `qs:"teams"`
-	TicketID              int64              `qs:"ticket"`
+	TicketID              *int64             `qs:"ticket,omitempty"`
 	TimeRange             string             `qs:"timeRange"`
 	TWCompanyIDs          []int64            `qs:"twCompanyIds"`
 	Types                 []int64            `qs:"types"`
 	Unassigned            bool               `qs:"unassigned"`
-	UpdatedAtFrom         time.Time          `qs:"updatedAtFrom"`
-	UpdatedAtTo           time.Time          `qs:"updatedAtTo"`
 }

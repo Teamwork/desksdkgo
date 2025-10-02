@@ -29,7 +29,7 @@ func main() {
 	envCount, _ := strconv.ParseInt(util.GetEnv("DESK_COUNT", "1"), 10, 64)
 	count := flag.Int("count", int(envCount), "Number of resources to create (default: 1)")
 	id := flag.Int("id", 0, "Resource ID for get/update actions")
-	debug := flag.Bool("debug", false, "Enable debug logging")
+	debug := flag.Bool("debug", true, "Enable debug logging")
 	data := flag.String("data", "", "JSON data to merge with default values for create/update actions")
 	flag.Parse()
 
@@ -101,6 +101,19 @@ func generateData(
 	for range count {
 		switch strings.ToLower(resource) {
 		case "tickets":
+			if strings.EqualFold(action, "search") {
+				filter := &models.SearchTicketsFilter{
+					Search: "Test",
+				}
+				resp, err := c.Tickets.Search(ctx, filter)
+				if err != nil {
+					log.Fatalf("Failed to search tickets: %v", err)
+				}
+				enc := json.NewEncoder(os.Stdout)
+				enc.SetIndent("", "  ")
+				enc.Encode(resp)
+				return
+			}
 			api.Call(ctx, c.Tickets, action, id, func() *models.TicketResponse {
 				inboxes, err := c.Inboxes.List(ctx, nil)
 				if err != nil {
