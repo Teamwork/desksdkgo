@@ -49,3 +49,51 @@ type TicketResponse struct {
 	Ticket   Ticket       `json:"ticket"`
 	Included IncludedData `json:"included"`
 }
+
+type CustomFieldsSearch []CustomFieldSearch
+
+type CustomFieldSearch struct {
+	ID        int64   `qs:"id"`
+	Value     string  `qs:"value"`
+	Values    []int64 `qs:"values"`
+	Operation string  `qs:"operation"`
+}
+
+type SearchTicketsFilter struct {
+	Agents                []int64            `qs:"agents"`
+	Companies             []int64            `qs:"companies"`
+	Customers             []int64            `qs:"customers"`
+	CustomFields          CustomFieldsSearch `qs:"customfields"`
+	EndDate               time.Time          `qs:"endDate"`
+	Exact                 bool               `qs:"exact"`
+	ExcludeInboxes        []int64            `qs:"excludeInboxes"`
+	ExcludeTags           []int64            `qs:"excludeTags"`
+	ExcludeWorkEmails     bool               `qs:"excludeWorkEmails"`
+	Filter                string             `qs:"filter"`
+	HelpdocSites          []int64            `qs:"helpdocSites"`
+	Inboxes               []int64            `qs:"inboxes"`
+	IncludeArchivedAgents bool               `qs:"includeArchivedAgents"`
+	LastUpdated           time.Time          `qs:"lastUpdated"`
+	OmitMerged            bool               `qs:"omitMerged"`
+	OnlyUntagged          bool               `qs:"onlyUntagged"`
+	OnlyWithAttachment    bool               `qs:"onlyWithAttachment"`
+	Priorities            []int64            `qs:"priorities"`
+	ProjectID             int64              `qs:"project"`
+	RequireAllTags        bool               `qs:"tagRequireAll"`
+	Search                string             `qs:"search"`
+	Sources               []int64            `qs:"sources"`
+	StartDate             time.Time          `qs:"startDate"`
+	Statuses              []int64            `qs:"statuses"`
+	SubjectKeywords       []string           `qs:"subjectKeywords"`
+	Tags                  []int64            `qs:"tags"`
+	TaskID                int64              `qs:"task"`
+	TaskStatuses          []string           `qs:"taskStatuses"`
+	Teams                 []int64            `qs:"teams"`
+	TicketID              int64              `qs:"ticket"`
+	TimeRange             string             `qs:"timeRange"`
+	TWCompanyIDs          []int64            `qs:"twCompanyIds"`
+	Types                 []int64            `qs:"types"`
+	Unassigned            bool               `qs:"unassigned"`
+	UpdatedAtFrom         time.Time          `qs:"updatedAtFrom"`
+	UpdatedAtTo           time.Time          `qs:"updatedAtTo"`
+}
