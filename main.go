@@ -101,6 +101,19 @@ func generateData(
 	for range count {
 		switch strings.ToLower(resource) {
 		case "tickets":
+			if strings.EqualFold(action, "search") {
+				filter := &models.SearchTicketsFilter{
+					Search: "Test",
+				}
+				resp, err := c.Tickets.Search(ctx, filter)
+				if err != nil {
+					log.Fatalf("Failed to search tickets: %v", err)
+				}
+				enc := json.NewEncoder(os.Stdout)
+				enc.SetIndent("", "  ")
+				enc.Encode(resp)
+				return
+			}
 			api.Call(ctx, c.Tickets, action, id, func() *models.TicketResponse {
 				inboxes, err := c.Inboxes.List(ctx, nil)
 				if err != nil {

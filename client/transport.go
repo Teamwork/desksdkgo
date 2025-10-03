@@ -2,9 +2,11 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"io"
 	"log/slog"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -35,7 +37,7 @@ func (t *LoggingTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 		}
 	}
 
-	t.Logger.LogAttrs(nil, slog.LevelDebug, "HTTP Request", attrs...)
+	t.Logger.LogAttrs(context.Background(), slog.LevelDebug, "HTTP Request", attrs...)
 
 	// Make the request
 	start := time.Now()
@@ -61,7 +63,7 @@ func (t *LoggingTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 		}
 	}
 
-	t.Logger.LogAttrs(nil, slog.LevelDebug, "HTTP Response", respAttrs...)
+	t.Logger.LogAttrs(context.Background(), slog.LevelDebug, "HTTP Response", respAttrs...)
 
 	return resp, err
 }
@@ -74,7 +76,7 @@ func NewLoggingClient(level slog.Level) *http.Client {
 // NewLoggingClientWithLogger creates a new HTTP client with logging using a custom logger
 func NewLoggingClientWithLogger(level slog.Level, logger *slog.Logger) *http.Client {
 	if logger == nil {
-		logger = slog.New(slog.NewJSONHandler(nil, &slog.HandlerOptions{
+		logger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 			Level: level,
 		}))
 	}
