@@ -28,7 +28,7 @@ type Ticket struct {
 	ResponseTimeMins      int         `json:"responseTimeMins"`
 	Source                *EntityRef  `json:"source,omitempty"`
 	SpamRules             any         `json:"spam_rules"`
-	SpamScore             int         `json:"spam_score"`
+	SpamScore             float64     `json:"spam_score"`
 	Status                *EntityRef  `json:"status,omitempty"`
 	Subject               string      `json:"subject"`
 	Suggestions           struct{}    `json:"suggestions"`
