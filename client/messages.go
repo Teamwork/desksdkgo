@@ -59,7 +59,7 @@ func (s *MessageService) CreateForTicket(ctx context.Context, ticketID int, mess
 		return nil, fmt.Errorf("message is required")
 	}
 
-	body, err := json.Marshal(message)
+	body, err := json.Marshal(message.Message)
 	if err != nil {
 		return nil, err
 	}

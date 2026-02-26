@@ -15,11 +15,10 @@ type Message struct {
 	DeliveryStatus     string     `json:"deliveryStatus"`
 	EditMethod         string     `json:"editMethod"`
 	EmailMessageID     string     `json:"emailMessageId"`
-	HTMLBody           string     `json:"htmlBody"`
+	Message            string     `json:"message"`
 	IsPinned           bool       `json:"isPinned"`
 	S3Link             *string    `json:"s3link"`
 	Status             EntityRef  `json:"status,omitempty"`
-	TextBody           string     `json:"textBody"`
 	ThreadType         string     `json:"threadType"`
 	Ticket             EntityRef  `json:"ticket"`
 	ViewedByCustomerAt *time.Time `json:"viewedByCustomerAt"`

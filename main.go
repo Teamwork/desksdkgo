@@ -29,7 +29,7 @@ func main() {
 	envCount, _ := strconv.ParseInt(util.GetEnv("DESK_COUNT", "1"), 10, 64)
 	count := flag.Int("count", int(envCount), "Number of resources to create (default: 1)")
 	id := flag.Int("id", 0, "Resource ID for get/update actions")
-	debug := flag.Bool("debug", false, "Enable debug logging")
+	debug := flag.Bool("debug", true, "Enable debug logging")
 	data := flag.String("data", "", "JSON data to merge with default values for create/update actions")
 	flag.Parse()
 
@@ -283,7 +283,7 @@ func generateData(
 				}
 
 				resp := &models.MessageResponse{Message: models.Message{
-					TextBody: gofakeit.Paragraph(1, 2, 5, " "),
+					Message: gofakeit.Paragraph(1, 2, 5, " "),
 					Ticket: models.EntityRef{
 						ID: tickets.Tickets[0].ID,
 					},

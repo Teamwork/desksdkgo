@@ -20,7 +20,7 @@ func TestMessageServiceCreateForTicket(t *testing.T) {
 	client := NewClient("https://example.com", WithHTTPClient(&http.Client{Transport: mockTransport}))
 
 	resp, err := client.Messages.CreateForTicket(context.Background(), 123, &models.MessageResponse{
-		Message: models.Message{TextBody: "hello"},
+		Message: models.Message{Message: "hello"},
 	})
 	if err != nil {
 		t.Fatalf("CreateForTicket() returned error: %v", err)
@@ -57,8 +57,8 @@ func TestMessageServiceCreateUsesMessageTicketID(t *testing.T) {
 
 	_, err := client.Messages.Create(context.Background(), &models.MessageResponse{
 		Message: models.Message{
-			Ticket:   models.EntityRef{ID: 321},
-			TextBody: "reply",
+			Ticket:  models.EntityRef{ID: 321},
+			Message: "reply",
 		},
 	})
 	if err != nil {
@@ -79,7 +79,7 @@ func TestMessageServiceCreateRequiresTicketID(t *testing.T) {
 	client := NewClient("https://example.com", WithHTTPClient(&http.Client{Transport: NewMockRoundTripper()}))
 
 	_, err := client.Messages.Create(context.Background(), &models.MessageResponse{
-		Message: models.Message{TextBody: "no ticket"},
+		Message: models.Message{Message: "no ticket"},
 	})
 	if err == nil {
 		t.Fatal("expected error when ticket ID is missing")
