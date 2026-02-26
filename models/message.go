@@ -10,14 +10,9 @@ type Message struct {
 	CC                 []string   `json:"cc"`
 	Contact            EntityRef  `json:"contact,omitempty"`
 	Delayed            bool       `json:"delayed"`
-	DeliveryMethod     string     `json:"deliveryMethod"`
-	DeliveryReason     string     `json:"deliveryReason"`
-	DeliveryStatus     string     `json:"deliveryStatus"`
 	EditMethod         string     `json:"editMethod"`
-	EmailMessageID     string     `json:"emailMessageId"`
 	Message            string     `json:"message"`
 	IsPinned           bool       `json:"isPinned"`
-	S3Link             *string    `json:"s3link"`
 	Status             EntityRef  `json:"status,omitempty"`
 	ThreadType         string     `json:"threadType"`
 	Ticket             EntityRef  `json:"ticket"`
