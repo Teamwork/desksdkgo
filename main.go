@@ -24,7 +24,7 @@ func main() {
 	// Define flags with environment variable fallbacks
 	apiKey := flag.String("api-key", util.GetEnv("DESK_API_KEY", ""), "Desk API key (can also be set via DESK_API_KEY env var)")
 	baseURL := flag.String("base-url", util.GetEnv("DESK_BASE_URL", "https://mycompany.teamwork.com/desk/api/v2"), "Desk API base URL (can also be set via DESK_BASE_URL env var)")
-	resource := flag.String("resource", util.GetEnv("DESK_RESOURCE", "tickets"), "Resource to interact with (tickets, customers, companies, users) (can also be set via DESK_RESOURCE env var)")
+	resource := flag.String("resource", util.GetEnv("DESK_RESOURCE", "tickets"), "Resource to interact with (tickets, messages, customers, companies, users) (can also be set via DESK_RESOURCE env var)")
 	action := flag.String("action", util.GetEnv("DESK_ACTION", "list"), "Action to perform (get, list, create, update) (can also be set via DESK_ACTION env var)")
 	envCount, _ := strconv.ParseInt(util.GetEnv("DESK_COUNT", "1"), 10, 64)
 	count := flag.Int("count", int(envCount), "Number of resources to create (default: 1)")
@@ -73,6 +73,7 @@ func main() {
 			"companies",
 			"customers",
 			"inboxes",
+			"messages",
 			"priorities",
 			"slas",
 			"spamlists",
@@ -268,6 +269,30 @@ func generateData(
 				if jsonData != nil {
 					util.MergeJSONData(&resp.Tag, jsonData)
 				}
+				return resp
+			})
+		case "messages":
+			api.Call(ctx, c.Messages, action, id, func() *models.MessageResponse {
+				tickets, err := c.Tickets.List(ctx, nil)
+				if err != nil {
+					log.Fatalf("Failed to list tickets: %v", err)
+				}
+
+				if len(tickets.Tickets) == 0 {
+					log.Fatal("No tickets found. Please create a ticket first.")
+				}
+
+				resp := &models.MessageResponse{Message: models.Message{
+					TextBody: gofakeit.Paragraph(1, 2, 5, " "),
+					Ticket: models.EntityRef{
+						ID: tickets.Tickets[0].ID,
+					},
+				}}
+
+				if jsonData != nil {
+					util.MergeJSONData(&resp.Message, jsonData)
+				}
+
 				return resp
 			})
 		case "files":
