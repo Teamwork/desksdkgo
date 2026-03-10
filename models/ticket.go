@@ -33,6 +33,7 @@ type Ticket struct {
 	Subject               string      `json:"subject"`
 	Suggestions           struct{}    `json:"suggestions"`
 	Tags                  []EntityRef `json:"tags"`
+	Tasks                 []Task      `json:"tasks"`
 	Timelogs              []EntityRef `json:"timelogs"`
 	Type                  *EntityRef  `json:"type,omitempty"`
 }
@@ -57,6 +58,27 @@ type CustomFieldSearch struct {
 	Value     string  `qs:"value"`
 	Values    []int64 `qs:"values"`
 	Operation string  `qs:"operation"`
+}
+
+type Task struct {
+	ID   int    `json:"id"`
+	Type string `json:"type"`
+	Meta struct {
+		Completed bool `json:"completed"`
+		Project   struct {
+			ID   int    `json:"id"`
+			Type string `json:"type"`
+		} `json:"project"`
+		StateChanged bool   `json:"stateChanged"`
+		Status       string `json:"status"`
+		Task         struct {
+			Completed    bool   `json:"completed"`
+			ID           int    `json:"id"`
+			StateChanged bool   `json:"stateChanged"`
+			Status       string `json:"status"`
+			Type         string `json:"type"`
+		} `json:"task"`
+	} `json:"meta"`
 }
 
 type SearchTicketsFilter struct {
