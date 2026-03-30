@@ -24,6 +24,10 @@ type PathHandler interface {
 	Update(id int) string
 }
 
+type updateMethodProvider interface {
+	UpdateMethod() string
+}
+
 // NewService creates a new generic service
 func NewService[T any, L any](client *Client, router PathHandler) *Service[T, L] {
 	return &Service[T, L]{
@@ -183,7 +187,14 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 		return nil, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPut,
+	method := http.MethodPut
+	if p, ok := s.router.(updateMethodProvider); ok {
+		if m := p.UpdateMethod(); m != "" {
+			method = m
+		}
+	}
+
+	req, err := http.NewRequestWithContext(ctx, method,
 		fmt.Sprintf("%s/%s.json", s.client.baseURL, s.router.Update(id)), bytes.NewBuffer(body))
 	if err != nil {
 		s.logError("failed to create request", slog.Any("error", err))
@@ -192,7 +203,7 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 
 	resp, err := s.client.doRequest(ctx, req)
 	if err != nil {
-		s.logError("request failed", slog.Any("error", err), slog.String("method", http.MethodPut), slog.String("url", req.URL.String()))
+		s.logError("request failed", slog.Any("error", err), slog.String("method", method), slog.String("url", req.URL.String()))
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -201,7 +212,7 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 		body, _ := io.ReadAll(resp.Body)
 		s.logError("unexpected status code",
 			slog.Int("status_code", resp.StatusCode),
-			slog.String("method", http.MethodPut),
+			slog.String("method", method),
 			slog.String("url", req.URL.String()),
 			slog.String("response_body", string(body)),
 		)
@@ -212,7 +223,7 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 	if err := json.NewDecoder(resp.Body).Decode(&updatedResource); err != nil {
 		s.logError("failed to decode response",
 			slog.Any("error", err),
-			slog.String("method", http.MethodPut),
+			slog.String("method", method),
 			slog.String("url", req.URL.String()),
 		)
 		return nil, err
