@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 // Message related types
 type Message struct {
@@ -17,6 +20,21 @@ type Message struct {
 	ThreadType         string     `json:"threadType"`
 	Ticket             EntityRef  `json:"ticket"`
 	ViewedByCustomerAt *time.Time `json:"viewedByCustomerAt"`
+}
+
+func (m *Message) UnmarshalJSON(data []byte) error {
+	type Alias Message
+	aux := &struct {
+		HtmlBody string `json:"htmlBody"`
+		*Alias
+	}{
+		Alias: (*Alias)(m),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	m.Message = aux.HtmlBody
+	return nil
 }
 
 type MessageResponse struct {
