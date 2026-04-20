@@ -5,20 +5,20 @@ import "time"
 // Ticket related types
 type Ticket struct {
 	BaseEntity
-	Activities            []EntityRef `json:"activities"`
+	Activities            []EntityRef `json:"activities,omitempty"`
 	Agent                 *EntityRef  `json:"agent,omitempty"`
-	BCC                   []string    `json:"bcc"`
+	BCC                   []string    `json:"bcc,omitempty"`
 	Body                  string      `json:"message"`
-	CC                    []string    `json:"cc"`
+	CC                    []string    `json:"cc,omitempty"`
 	Contact               *EntityRef  `json:"contact,omitempty"`
-	Customer              EntityRef   `json:"customer"`
+	Customer              *EntityRef  `json:"customer,omitempty"`
 	Files                 []EntityRef `json:"files,omitempty"`
 	HappinessSurveySentAt *time.Time  `json:"happinessSurveySentAt"`
 	ImagesHidden          bool        `json:"imagesHidden"`
-	Inbox                 EntityRef   `json:"inbox"`
+	Inbox                 *EntityRef  `json:"inbox,omitempty"`
 	IsRead                bool        `json:"isRead"`
 	MessageCount          int         `json:"messageCount"`
-	Messages              []EntityRef `json:"messages"`
+	Messages              []EntityRef `json:"messages,omitempty"`
 	NotifyCustomer        bool        `json:"notifyCustomer"`
 	OriginalRecipient     string      `json:"originalRecipient"`
 	PreviewText           string      `json:"previewText"`
@@ -32,9 +32,9 @@ type Ticket struct {
 	Status                *EntityRef  `json:"status,omitempty"`
 	Subject               string      `json:"subject"`
 	Suggestions           struct{}    `json:"suggestions"`
-	Tags                  []EntityRef `json:"tags"`
-	Tasks                 []Task      `json:"tasks"`
-	Timelogs              []EntityRef `json:"timelogs"`
+	Tags                  []EntityRef `json:"tags,omitempty"`
+	Tasks                 []Task      `json:"tasks,omitempty"`
+	Timelogs              []EntityRef `json:"timelogs,omitempty"`
 	Type                  *EntityRef  `json:"type,omitempty"`
 }
 

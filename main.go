@@ -190,10 +190,10 @@ func generateData(
 					Subject:           gofakeit.Sentence(1),
 					PreviewText:       gofakeit.Paragraph(1, 2, 3, " "),
 					OriginalRecipient: gofakeit.Email(),
-					Inbox: models.EntityRef{
+					Inbox: &models.EntityRef{
 						ID: inboxes.Inboxes[0].ID,
 					},
-					Customer: models.EntityRef{
+					Customer: &models.EntityRef{
 						ID: customers.Customers[0].ID,
 					},
 					Body: gofakeit.Paragraph(3, 5, 10, "\n"),
