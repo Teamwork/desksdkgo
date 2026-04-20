@@ -145,7 +145,7 @@ func (s *Service[T, L]) Create(ctx context.Context, resource *T) (*T, error) {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusCreated {
+	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
 		b, err := io.ReadAll(resp.Body)
 		if err != nil {
 			s.logError("failed to read response body",
