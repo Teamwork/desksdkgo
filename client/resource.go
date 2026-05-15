@@ -44,9 +44,12 @@ func (s *Service[T, L]) logError(msg string, attrs ...slog.Attr) {
 }
 
 // Get retrieves a resource by ID
-func (s *Service[T, L]) Get(ctx context.Context, id int) (*T, error) {
+func (s *Service[T, L]) Get(ctx context.Context, id int, params url.Values) (*T, error) {
+	if params == nil {
+		params = (&GetOptions{}).Values()
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		fmt.Sprintf("%s/%s.json?includes=all", s.client.baseURL, s.router.Get(id)), nil)
+		fmt.Sprintf("%s/%s.json?%s", s.client.baseURL, s.router.Get(id), params.Encode()), nil)
 	if err != nil {
 		s.logError("failed to create request", slog.Any("error", err))
 		return nil, err

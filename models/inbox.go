@@ -3,57 +3,57 @@ package models
 // Inbox related types
 type Inbox struct {
 	BaseEntity
-	AutoReplyEnabled              bool         `json:"autoReplyEnabled"`
-	AutoReplyMessage              string       `json:"autoReplyMessage"`
-	AutoReplySubject              string       `json:"autoReplySubject"`
-	ClientOnly                    bool         `json:"clientOnly"`
-	DisplayOrder                  int          `json:"displayOrder"`
-	Email                         string       `json:"email"`
-	EmailForwardingState          string       `json:"emailForwardingState"`
-	ForwardingAddress             string       `json:"forwardingAddress"`
-	HappinessRatingEnabled        bool         `json:"happinessRatingEnabled"`
-	HappinessRatingMessage        string       `json:"happinessRatingMessage"`
-	IconImage                     string       `json:"iconImage"`
+	AutoReplyEnabled              *bool        `json:"autoReplyEnabled,omitempty"`
+	AutoReplyMessage              *string      `json:"autoReplyMessage,omitempty"`
+	AutoReplySubject              *string      `json:"autoReplySubject,omitempty"`
+	ClientOnly                    *bool        `json:"clientOnly,omitempty"`
+	DisplayOrder                  *int         `json:"displayOrder,omitempty"`
+	Email                         *string      `json:"email,omitempty"`
+	EmailForwardingState          *string      `json:"emailForwardingState,omitempty"`
+	ForwardingAddress             *string      `json:"forwardingAddress,omitempty"`
+	HappinessRatingEnabled        *bool        `json:"happinessRatingEnabled,omitempty"`
+	HappinessRatingMessage        *string      `json:"happinessRatingMessage,omitempty"`
+	IconImage                     *string      `json:"iconImage,omitempty"`
 	Inboxaliases                  []EntityRef  `json:"inboxaliases"`
 	Inboxcnames                   []InboxCname `json:"inboxcnames"`
 	Inboxemailrefs                any          `json:"inboxemailrefs"`
-	IncludeTicketHistoryOnForward bool         `json:"includeTicketHistoryOnForward"`
-	IsAdmin                       bool         `json:"isAdmin"`
-	IsFreeDomain                  bool         `json:"isFreeDomain"`
-	LanguageCode                  string       `json:"languageCode"`
-	LocalPart                     string       `json:"localPart"`
-	Name                          string       `json:"name"`
-	NotificationsOnly             bool         `json:"notificationsOnly"`
+	IncludeTicketHistoryOnForward *bool        `json:"includeTicketHistoryOnForward,omitempty"`
+	IsAdmin                       *bool        `json:"isAdmin,omitempty"`
+	IsFreeDomain                  *bool        `json:"isFreeDomain,omitempty"`
+	LanguageCode                  *string      `json:"languageCode,omitempty"`
+	LocalPart                     *string      `json:"localPart,omitempty"`
+	Name                          *string      `json:"name,omitempty"`
+	NotificationsOnly             *bool        `json:"notificationsOnly,omitempty"`
 	Oauth2Token                   any          `json:"oauth2token"`
-	OnClosedLock                  string       `json:"onClosedLock"`
-	OnClosedWait                  int          `json:"onClosedWait"`
+	OnClosedLock                  *string      `json:"onClosedLock,omitempty"`
+	OnClosedWait                  *int         `json:"onClosedWait,omitempty"`
 	Projects                      []EntityRef  `json:"projects"`
-	PublicIconImage               string       `json:"publicIconImage"`
+	PublicIconImage               *string      `json:"publicIconImage,omitempty"`
 	Restricteddomains             any          `json:"restricteddomains"`
-	SendEmailsFrom                string       `json:"sendEmailsFrom"`
-	Signature                     string       `json:"signature"`
-	SMTPPassword                  string       `json:"smtpPassword"`
-	SMTPPort                      int          `json:"smtpPort"`
-	SMTPProvider                  string       `json:"smtpProvider"`
-	SMTPSecurity                  string       `json:"smtpSecurity"`
-	SMTPServer                    string       `json:"smtpServer"`
-	SMTPUsername                  string       `json:"smtpUsername"`
-	SpamThreshold                 int          `json:"spamThreshold"`
-	Starred                       bool         `json:"starred"`
+	SendEmailsFrom                *string      `json:"sendEmailsFrom,omitempty"`
+	Signature                     *string      `json:"signature,omitempty"`
+	SMTPPassword                  *string      `json:"smtpPassword,omitempty"`
+	SMTPPort                      *int         `json:"smtpPort,omitempty"`
+	SMTPProvider                  *string      `json:"smtpProvider,omitempty"`
+	SMTPSecurity                  *string      `json:"smtpSecurity,omitempty"`
+	SMTPServer                    *string      `json:"smtpServer,omitempty"`
+	SMTPUsername                  *string      `json:"smtpUsername,omitempty"`
+	SpamThreshold                 *int         `json:"spamThreshold,omitempty"`
+	Starred                       *bool        `json:"starred,omitempty"`
 	SyncAccountID                 any          `json:"syncAccountId"`
 	SyncDays                      any          `json:"syncDays"`
-	Synced                        bool         `json:"synced"`
+	Synced                        *bool        `json:"synced,omitempty"`
 	SyncSubscriptionID            any          `json:"syncSubscriptionId"`
-	Ticketstatus                  EntityRef    `json:"ticketstatus"`
+	Ticketstatus                  *EntityRef   `json:"ticketstatus,omitempty"`
 	Tickettypes                   []EntityRef  `json:"tickettypes"`
-	TimeloggingEnabled            bool         `json:"timeloggingEnabled"`
+	TimeloggingEnabled            *bool        `json:"timeloggingEnabled,omitempty"`
 	Triggers                      []Trigger    `json:"triggers"`
-	Type                          string       `json:"type"`
+	Type                          *string      `json:"type,omitempty"`
 	User                          any          `json:"user"`
 	Users                         []InboxUser  `json:"users"`
-	UseTeamworkMailServer         bool         `json:"useTeamworkMailServer"`
-	UsingOfficeHours              bool         `json:"usingOfficeHours"`
-	Verified                      bool         `json:"verified"`
+	UseTeamworkMailServer         *bool        `json:"useTeamworkMailServer,omitempty"`
+	UsingOfficeHours              *bool        `json:"usingOfficeHours,omitempty"`
+	Verified                      *bool        `json:"verified,omitempty"`
 }
 
 type InboxesResponse struct {
@@ -74,22 +74,22 @@ type InboxUser struct {
 }
 
 type InboxMeta struct {
-	Access  string `json:"access"`
-	IsAdmin bool   `json:"isAdmin"`
-	Starred bool   `json:"starred"`
-	State   string `json:"state"`
+	Access  *string `json:"access,omitempty"`
+	IsAdmin *bool   `json:"isAdmin,omitempty"`
+	Starred *bool   `json:"starred,omitempty"`
+	State   *string `json:"state,omitempty"`
 }
 
 type Trigger struct {
 	EntityRef
 	Meta struct {
-		DisplayOrder int `json:"displayOrder"`
+		DisplayOrder *int `json:"displayOrder,omitempty"`
 	} `json:"meta"`
 }
 
 type InboxCname struct {
 	EntityRef
 	Meta struct {
-		Domain string `json:"domain"`
+		Domain *string `json:"domain,omitempty"`
 	} `json:"meta"`
 }

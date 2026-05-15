@@ -4,8 +4,8 @@ package models
 // or IP address.  Type is whitelist or blacklist.
 type Spamlist struct {
 	BaseEntity
-	Term string `json:"term"`
-	Type string `json:"type"`
+	Term *string `json:"term,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // SpamlistsResponse represents the response for a list of spam lists

@@ -4,11 +4,11 @@ package models
 type BusinessHour struct {
 	BaseEntity
 
-	Name              string `json:"name"`
-	Description       string `json:"description"`
-	IsDefault         bool   `json:"isDefault"`
-	TimezoneID        int64  `json:"timezoneId"`
-	TimezoneReference string `json:"timezone_name"`
+	Name              *string `json:"name,omitempty"`
+	Description       *string `json:"description,omitempty"`
+	IsDefault         *bool   `json:"isDefault,omitempty"`
+	TimezoneID        *int64  `json:"timezoneId,omitempty"`
+	TimezoneReference *string `json:"timezone_name,omitempty"`
 }
 
 // BusinessHoursResponse represents the response for a list of businesshours

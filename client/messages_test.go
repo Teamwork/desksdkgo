@@ -8,6 +8,8 @@ import (
 	"github.com/teamwork/desksdkgo/models"
 )
 
+func ptr[T any](v T) *T { return &v }
+
 func TestMessageServiceCreateForTicket(t *testing.T) {
 	mockTransport := NewMockRoundTripper()
 	mockTransport.AddResponse(http.MethodPost, "/tickets/123/messages.json", http.StatusCreated, models.MessageResponse{
@@ -20,7 +22,7 @@ func TestMessageServiceCreateForTicket(t *testing.T) {
 	client := NewClient("https://example.com", WithHTTPClient(&http.Client{Transport: mockTransport}))
 
 	resp, err := client.Messages.CreateForTicket(context.Background(), 123, &models.MessageResponse{
-		Message: models.Message{Message: "hello"},
+		Message: models.Message{Message: ptr("hello")},
 	})
 	if err != nil {
 		t.Fatalf("CreateForTicket() returned error: %v", err)
@@ -58,7 +60,7 @@ func TestMessageServiceCreateUsesMessageTicketID(t *testing.T) {
 	_, err := client.Messages.Create(context.Background(), &models.MessageResponse{
 		Message: models.Message{
 			Ticket:  models.EntityRef{ID: 321},
-			Message: "reply",
+			Message: ptr("reply"),
 		},
 	})
 	if err != nil {
@@ -79,7 +81,7 @@ func TestMessageServiceCreateRequiresTicketID(t *testing.T) {
 	client := NewClient("https://example.com", WithHTTPClient(&http.Client{Transport: NewMockRoundTripper()}))
 
 	_, err := client.Messages.Create(context.Background(), &models.MessageResponse{
-		Message: models.Message{Message: "no ticket"},
+		Message: models.Message{Message: ptr("no ticket")},
 	})
 	if err == nil {
 		t.Fatal("expected error when ticket ID is missing")

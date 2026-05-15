@@ -3,10 +3,10 @@ package models
 // TicketSource related types
 type TicketSource struct {
 	BaseEntity
-	Name         string `json:"name"`
-	Icon         string `json:"icon"`
-	DisplayOrder int    `json:"displayOrder"`
-	IsCustom     bool   `json:"isCustom"`
+	Name         *string `json:"name,omitempty"`
+	Icon         *string `json:"icon,omitempty"`
+	DisplayOrder *int    `json:"displayOrder,omitempty"`
+	IsCustom     *bool   `json:"isCustom,omitempty"`
 }
 
 type TicketSourcesResponse struct {

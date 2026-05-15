@@ -3,24 +3,24 @@ package models
 // User related types
 type User struct {
 	BaseEntity
-	Email                    string    `json:"email"`
-	FirstName                string    `json:"firstName"`
-	LastName                 string    `json:"lastName"`
-	AvatarURL                string    `json:"avatarURL"`
-	EditMethod               string    `json:"editMethod"`
-	IsPartTime               bool      `json:"isPartTime"`
-	TicketReplyRedirect      string    `json:"ticketReplyRedirect"`
-	Reviewer                 bool      `json:"reviewer"`
-	TrainingWheelsEnrollment EntityRef `json:"trainingWheelsEnrollment"`
-	Role                     string    `json:"role"`
-	SendPushNotifications    bool      `json:"sendPushNotifications"`
-	SendWebNotifications     bool      `json:"sendWebNotifications"`
-	AutoFollowOnCC           bool      `json:"autoFollowOnCC"`
-	TimeFormatID             int       `json:"timeFormatId"`
-	TimezoneID               int       `json:"timezoneId"`
-	ProjectsCompanyID        int       `json:"projectsCompanyId"`
-	IsAppOwner               bool      `json:"isAppOwner"`
-	LdKey                    string    `json:"ldKey"`
+	Email                    *string    `json:"email,omitempty"`
+	FirstName                *string    `json:"firstName,omitempty"`
+	LastName                 *string    `json:"lastName,omitempty"`
+	AvatarURL                *string    `json:"avatarURL,omitempty"`
+	EditMethod               *string    `json:"editMethod,omitempty"`
+	IsPartTime               *bool      `json:"isPartTime,omitempty"`
+	TicketReplyRedirect      *string    `json:"ticketReplyRedirect,omitempty"`
+	Reviewer                 *bool      `json:"reviewer,omitempty"`
+	TrainingWheelsEnrollment *EntityRef `json:"trainingWheelsEnrollment,omitempty"`
+	Role                     *string    `json:"role,omitempty"`
+	SendPushNotifications    *bool      `json:"sendPushNotifications,omitempty"`
+	SendWebNotifications     *bool      `json:"sendWebNotifications,omitempty"`
+	AutoFollowOnCC           *bool      `json:"autoFollowOnCC,omitempty"`
+	TimeFormatID             *int       `json:"timeFormatId,omitempty"`
+	TimezoneID               *int       `json:"timezoneId,omitempty"`
+	ProjectsCompanyID        *int       `json:"projectsCompanyId,omitempty"`
+	IsAppOwner               *bool      `json:"isAppOwner,omitempty"`
+	LdKey                    *string    `json:"ldKey,omitempty"`
 }
 
 type UsersResponse struct {

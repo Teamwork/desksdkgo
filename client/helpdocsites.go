@@ -20,8 +20,8 @@ func NewHelpDocSiteService(client *Client) *HelpDocSiteService {
 }
 
 // Get retrieves a help doc site by ID
-func (s *HelpDocSiteService) Get(ctx context.Context, id int) (*models.HelpDocSiteResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *HelpDocSiteService) Get(ctx context.Context, id int, params url.Values) (*models.HelpDocSiteResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of help doc sites with optional filters

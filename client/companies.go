@@ -20,8 +20,8 @@ func NewCompanyService(client *Client) *CompanyService {
 }
 
 // Get retrieves a company by ID
-func (s *CompanyService) Get(ctx context.Context, id int) (*models.CompanyResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *CompanyService) Get(ctx context.Context, id int, params url.Values) (*models.CompanyResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of companies with optional filters

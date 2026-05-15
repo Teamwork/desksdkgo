@@ -20,8 +20,8 @@ func NewTagService(client *Client) *TagService {
 }
 
 // Get retrieves a tag by ID
-func (s *TagService) Get(ctx context.Context, id int) (*models.TagResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *TagService) Get(ctx context.Context, id int, params url.Values) (*models.TagResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of tages with optional filters

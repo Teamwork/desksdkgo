@@ -153,6 +153,26 @@ func (c *Client) doRequest(ctx context.Context, req *http.Request) (*http.Respon
 	return handler(ctx, req)
 }
 
+// GetOptions represents options for single-resource get operations
+type GetOptions struct {
+	Fields   string
+	Includes string
+}
+
+// Values builds a url.Values from the options. Defaults includes to "all" when unset.
+func (o *GetOptions) Values() url.Values {
+	v := url.Values{}
+	includes := "all"
+	if o != nil && o.Includes != "" {
+		includes = o.Includes
+	}
+	v.Set("includes", includes)
+	if o != nil && o.Fields != "" {
+		v.Set("fields", o.Fields)
+	}
+	return v
+}
+
 // ListOptions represents options for list operations
 type ListOptions struct {
 	Page    int

@@ -20,8 +20,8 @@ func NewHelpDocArticleService(client *Client) *HelpDocArticleService {
 }
 
 // Get retrieves a help doc article by ID
-func (s *HelpDocArticleService) Get(ctx context.Context, id int) (*models.HelpDocArticleResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *HelpDocArticleService) Get(ctx context.Context, id int, params url.Values) (*models.HelpDocArticleResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of help doc articles with optional filters

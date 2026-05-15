@@ -37,8 +37,8 @@ func NewFileService(client *Client) *FileService {
 }
 
 // Get retrieves a file by ID
-func (s *FileService) Get(ctx context.Context, id int) (*models.FileResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *FileService) Get(ctx context.Context, id int, params url.Values) (*models.FileResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of files with optional filters
@@ -79,7 +79,11 @@ func (s *FileService) Upload(ctx context.Context, file *models.FileResponse, f [
 		}
 	}
 
-	part, err := writer.CreateFormFile("file", file.File.Filename)
+	filename := ""
+	if file.File.Filename != nil {
+		filename = *file.File.Filename
+	}
+	part, err := writer.CreateFormFile("file", filename)
 	if err != nil {
 		return fmt.Errorf("create form file: %w", err)
 	}
@@ -91,7 +95,11 @@ func (s *FileService) Upload(ctx context.Context, file *models.FileResponse, f [
 
 	writer.Close()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, file.URL, &buf)
+	uploadURL := ""
+	if file.URL != nil {
+		uploadURL = *file.URL
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, uploadURL, &buf)
 	if err != nil {
 		return err
 	}

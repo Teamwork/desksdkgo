@@ -8,29 +8,29 @@ type Ticket struct {
 	Activities            []EntityRef `json:"activities,omitempty"`
 	Agent                 *EntityRef  `json:"agent,omitempty"`
 	BCC                   []string    `json:"bcc,omitempty"`
-	Body                  string      `json:"message"`
+	Body                  *string     `json:"message,omitempty"`
 	CC                    []string    `json:"cc,omitempty"`
 	Contact               *EntityRef  `json:"contact,omitempty"`
 	Customer              *EntityRef  `json:"customer,omitempty"`
 	Files                 []EntityRef `json:"files,omitempty"`
 	HappinessSurveySentAt *time.Time  `json:"happinessSurveySentAt"`
-	ImagesHidden          bool        `json:"imagesHidden"`
+	ImagesHidden          *bool       `json:"imagesHidden,omitempty"`
 	Inbox                 *EntityRef  `json:"inbox,omitempty"`
-	IsRead                bool        `json:"isRead"`
-	MessageCount          int         `json:"messageCount"`
+	IsRead                *bool       `json:"isRead,omitempty"`
+	MessageCount          *int        `json:"messageCount,omitempty"`
 	Messages              []EntityRef `json:"messages,omitempty"`
-	NotifyCustomer        bool        `json:"notifyCustomer"`
-	OriginalRecipient     string      `json:"originalRecipient"`
-	PreviewText           string      `json:"previewText"`
+	NotifyCustomer        *bool       `json:"notifyCustomer,omitempty"`
+	OriginalRecipient     *string     `json:"originalRecipient,omitempty"`
+	PreviewText           *string     `json:"previewText,omitempty"`
 	Priority              *EntityRef  `json:"priority,omitempty"`
-	Readonly              bool        `json:"readonly"`
-	ResolutionTimeMins    int         `json:"resolutionTimeMins"`
-	ResponseTimeMins      int         `json:"responseTimeMins"`
+	Readonly              *bool       `json:"readonly,omitempty"`
+	ResolutionTimeMins    *int        `json:"resolutionTimeMins,omitempty"`
+	ResponseTimeMins      *int        `json:"responseTimeMins,omitempty"`
 	Source                *EntityRef  `json:"source,omitempty"`
 	SpamRules             any         `json:"spam_rules"`
-	SpamScore             float64     `json:"spam_score"`
+	SpamScore             *float64    `json:"spam_score,omitempty"`
 	Status                *EntityRef  `json:"status,omitempty"`
-	Subject               string      `json:"subject"`
+	Subject               *string     `json:"subject,omitempty"`
 	Suggestions           struct{}    `json:"suggestions"`
 	Tags                  []EntityRef `json:"tags,omitempty"`
 	Tasks                 []Task      `json:"tasks,omitempty"`

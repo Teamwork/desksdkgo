@@ -3,11 +3,11 @@ package models
 // TicketType related types
 type TicketType struct {
 	BaseEntity
-	Name                    string      `json:"name"`
-	DisplayOrder            int         `json:"displayOrder"`
+	Name                    *string     `json:"name,omitempty"`
+	DisplayOrder            *int        `json:"displayOrder,omitempty"`
 	Inboxes                 []EntityRef `json:"inboxes"`
-	Default                 bool        `json:"default"`
-	EnabledForFutureInboxes bool        `json:"enabledForFutureInboxes"`
+	Default                 *bool       `json:"default,omitempty"`
+	EnabledForFutureInboxes *bool       `json:"enabledForFutureInboxes,omitempty"`
 }
 
 type TicketTypesResponse struct {

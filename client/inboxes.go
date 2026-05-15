@@ -20,8 +20,8 @@ func NewInboxService(client *Client) *InboxService {
 }
 
 // Get retrieves an inbox by ID
-func (s *InboxService) Get(ctx context.Context, id int) (*models.InboxResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *InboxService) Get(ctx context.Context, id int, params url.Values) (*models.InboxResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of inboxes with optional filters

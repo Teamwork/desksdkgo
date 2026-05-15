@@ -17,6 +17,16 @@ import (
 	"github.com/teamwork/desksdkgo/util"
 )
 
+func ptr[T any](v T) *T { return &v }
+
+func deref[T any](v *T) T {
+	if v == nil {
+		var zero T
+		return zero
+	}
+	return *v
+}
+
 func main() {
 	// Load environment variables from .env file
 	util.LoadEnv()
@@ -187,16 +197,16 @@ func generateData(
 				}
 
 				resp := &models.TicketResponse{Ticket: models.Ticket{
-					Subject:           gofakeit.Sentence(1),
-					PreviewText:       gofakeit.Paragraph(1, 2, 3, " "),
-					OriginalRecipient: gofakeit.Email(),
+					Subject:           ptr(gofakeit.Sentence(1)),
+					PreviewText:       ptr(gofakeit.Paragraph(1, 2, 3, " ")),
+					OriginalRecipient: ptr(gofakeit.Email()),
 					Inbox: &models.EntityRef{
 						ID: inboxes.Inboxes[0].ID,
 					},
 					Customer: &models.EntityRef{
 						ID: customers.Customers[0].ID,
 					},
-					Body: gofakeit.Paragraph(3, 5, 10, "\n"),
+					Body: ptr(gofakeit.Paragraph(3, 5, 10, "\n")),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.Ticket, jsonData)
@@ -208,9 +218,9 @@ func generateData(
 				email := gofakeit.Email()
 				resp := &models.CustomerResponse{
 					Customer: models.Customer{
-						FirstName: gofakeit.FirstName(),
-						LastName:  gofakeit.LastName(),
-						Email:     email,
+						FirstName: ptr(gofakeit.FirstName()),
+						LastName:  ptr(gofakeit.LastName()),
+						Email:     ptr(email),
 					},
 					Included: models.IncludedData{
 						Contacts: []models.Contact{
@@ -218,8 +228,8 @@ func generateData(
 								BaseEntity: models.BaseEntity{
 									Type: "email",
 								},
-								Value:  email,
-								IsMain: true,
+								Value:  ptr(email),
+								IsMain: ptr(true),
 							},
 						},
 					},
@@ -233,13 +243,13 @@ func generateData(
 			api.Call(ctx, c.Companies, action, id, func() *models.CompanyResponse {
 				resp := &models.CompanyResponse{
 					Company: models.Company{
-						Name:        gofakeit.Company(),
-						Description: gofakeit.Paragraph(1, 2, 3, " "),
+						Name:        ptr(gofakeit.Company()),
+						Description: ptr(gofakeit.Paragraph(1, 2, 3, " ")),
 					},
 					Included: models.IncludedData{
 						Domains: []models.Domain{
 							{
-								Name: gofakeit.DomainName(),
+								Name: ptr(gofakeit.DomainName()),
 							},
 						},
 					},
@@ -252,9 +262,9 @@ func generateData(
 		case "users":
 			api.Call(ctx, c.Users, action, id, func() *models.UserResponse {
 				resp := &models.UserResponse{User: models.User{
-					FirstName: gofakeit.FirstName(),
-					LastName:  gofakeit.LastName(),
-					Email:     gofakeit.Email(),
+					FirstName: ptr(gofakeit.FirstName()),
+					LastName:  ptr(gofakeit.LastName()),
+					Email:     ptr(gofakeit.Email()),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.User, jsonData)
@@ -264,7 +274,7 @@ func generateData(
 		case "tags":
 			api.Call(ctx, c.Tags, action, id, func() *models.TagResponse {
 				resp := &models.TagResponse{Tag: models.Tag{
-					Name: gofakeit.Word(),
+					Name: ptr(gofakeit.Word()),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.Tag, jsonData)
@@ -283,7 +293,7 @@ func generateData(
 				}
 
 				resp := &models.MessageResponse{Message: models.Message{
-					Message: gofakeit.Paragraph(1, 2, 5, " "),
+					Message: ptr(gofakeit.Paragraph(1, 2, 5, " ")),
 					Ticket: models.EntityRef{
 						ID: tickets.Tickets[0].ID,
 					},
@@ -299,10 +309,10 @@ func generateData(
 			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
 			f := &models.FileResponse{File: models.File{
-				Filename:    gofakeit.LoremIpsumWord() + "." + gofakeit.FileExtension(),
-				MIMEType:    "image/jpeg",
-				Type:        models.FileTypeAttachment,
-				Disposition: models.DispositionAttachment,
+				Filename:    ptr(gofakeit.LoremIpsumWord() + "." + gofakeit.FileExtension()),
+				MIMEType:    ptr("image/jpeg"),
+				Type:        ptr(models.FileTypeAttachment),
+				Disposition: ptr(models.DispositionAttachment),
 			}}
 			if jsonData != nil {
 				util.MergeJSONData(&f.File, jsonData)
@@ -322,8 +332,8 @@ func generateData(
 		case "spamlists":
 			api.Call(ctx, c.Spamlists, action, id, func() *models.SpamlistResponse {
 				resp := &models.SpamlistResponse{Spamlist: models.Spamlist{
-					Term: gofakeit.Email(),
-					Type: "blacklist",
+					Term: ptr(gofakeit.Email()),
+					Type: ptr("blacklist"),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.Spamlist, jsonData)
@@ -333,7 +343,7 @@ func generateData(
 		case "statuses":
 			api.Call(ctx, c.TicketStatuses, action, id, func() *models.TicketStatusResponse {
 				resp := &models.TicketStatusResponse{TicketStatus: models.TicketStatus{
-					Name: gofakeit.Word(),
+					Name: ptr(gofakeit.Word()),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.TicketStatus, jsonData)
@@ -343,7 +353,7 @@ func generateData(
 		case "types":
 			api.Call(ctx, c.TicketTypes, action, id, func() *models.TicketTypeResponse {
 				resp := &models.TicketTypeResponse{TicketType: models.TicketType{
-					Name: gofakeit.Word(),
+					Name: ptr(gofakeit.Word()),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.TicketType, jsonData)
@@ -353,8 +363,8 @@ func generateData(
 		case "priorities":
 			api.Call(ctx, c.TicketPriorities, action, id, func() *models.TicketPriorityResponse {
 				resp := &models.TicketPriorityResponse{TicketPriority: models.TicketPriority{
-					Name:  gofakeit.Word(),
-					Color: gofakeit.SafeColor(),
+					Name:  ptr(gofakeit.Word()),
+					Color: ptr(gofakeit.SafeColor()),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.TicketPriority, jsonData)
@@ -364,7 +374,7 @@ func generateData(
 		case "helpdocsites":
 			api.Call(ctx, c.HelpDocSites, action, id, func() *models.HelpDocSiteResponse {
 				resp := &models.HelpDocSiteResponse{HelpDocSite: models.HelpDocSite{
-					Name: gofakeit.Company() + " Help Center",
+					Name: ptr(gofakeit.Company() + " Help Center"),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.HelpDocSite, jsonData)
@@ -374,8 +384,8 @@ func generateData(
 		case "helpdocarticles":
 			api.Call(ctx, c.HelpDocArticles, action, id, func() *models.HelpDocArticleResponse {
 				resp := &models.HelpDocArticleResponse{HelpDocArticle: models.HelpDocArticle{
-					Title:    gofakeit.Sentence(5),
-					Contents: gofakeit.Paragraph(3, 5, 10, "\n"),
+					Title:    ptr(gofakeit.Sentence(5)),
+					Contents: ptr(gofakeit.Paragraph(3, 5, 10, "\n")),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.HelpDocArticle, jsonData)
@@ -385,8 +395,8 @@ func generateData(
 		case "businesshours":
 			api.Call(ctx, c.BusinessHours, action, id, func() *models.BusinessHourResponse {
 				resp := &models.BusinessHourResponse{BusinessHour: models.BusinessHour{
-					Name:      gofakeit.Company() + " Business Hours",
-					IsDefault: true,
+					Name:      ptr(gofakeit.Company() + " Business Hours"),
+					IsDefault: ptr(true),
 				}}
 				if jsonData != nil {
 					util.MergeJSONData(&resp.BusinessHour, jsonData)
@@ -405,9 +415,9 @@ func generateData(
 				}
 
 				resp := &models.InboxResponse{Inbox: models.Inbox{
-					Name:      gofakeit.Company() + " Inbox",
-					Email:     gofakeit.Email(),
-					LocalPart: strings.SplitN(gofakeit.Email(), "@", 2)[0],
+					Name:      ptr(gofakeit.Company() + " Inbox"),
+					Email:     ptr(gofakeit.Email()),
+					LocalPart: ptr(strings.SplitN(gofakeit.Email(), "@", 2)[0]),
 				}}
 
 				for _, user := range users.Users {
@@ -416,7 +426,7 @@ func generateData(
 							ID: user.ID,
 						},
 						Meta: models.InboxMeta{
-							Access: "write",
+							Access: ptr("write"),
 						},
 					})
 				}
@@ -484,7 +494,7 @@ func generateData(
 
 				resp := &models.SLAResponse{
 					SLA: models.SLA{
-						Name: gofakeit.Company() + " SLA Policy",
+						Name: ptr(gofakeit.Company() + " SLA Policy"),
 						BusinessHour: &models.EntityRef{
 							ID: businesshours.BusinessHours[0].ID,
 						},
@@ -492,16 +502,16 @@ func generateData(
 					Included: models.IncludedData{
 						SLANotifications: []models.SLANotification{
 							{
-								Condition:          models.SLANotificationConditionTypeWarning,
-								Type:               models.SLANotificationTypeFirstResponse,
-								Duration:           gofakeit.Number(1, 10),
-								NotifyAssignedUser: true,
+								Condition:          ptr(models.SLANotificationConditionTypeWarning),
+								Type:               ptr(models.SLANotificationTypeFirstResponse),
+								Duration:           ptr(gofakeit.Number(1, 10)),
+								NotifyAssignedUser: ptr(true),
 							},
 							{
-								Condition:          models.SLANotificationConditionTypeBreach,
-								Type:               models.SLANotificationTypeFirstResponse,
-								Duration:           0,
-								NotifyAssignedUser: true,
+								Condition:          ptr(models.SLANotificationConditionTypeBreach),
+								Type:               ptr(models.SLANotificationTypeFirstResponse),
+								Duration:           ptr(0),
+								NotifyAssignedUser: ptr(true),
 							},
 						},
 					},
@@ -509,9 +519,9 @@ func generateData(
 
 				for _, priority := range priorities.TicketPriorities {
 					resp.Included.SLAPriorities = append(resp.Included.SLAPriorities, models.SLATicketPriority{
-						Hours:       gofakeit.Number(1, 10),
-						Minutes:     gofakeit.Number(1, 59),
-						Description: "SLA for " + priority.Name,
+						Hours:       ptr(gofakeit.Number(1, 10)),
+						Minutes:     ptr(gofakeit.Number(1, 59)),
+						Description: ptr("SLA for " + deref(priority.Name)),
 						TicketPriority: &models.EntityRef{
 							ID: priority.ID,
 						},
@@ -519,9 +529,9 @@ func generateData(
 				}
 
 				resp.Included.SLAPriorities = append(resp.Included.SLAPriorities, models.SLATicketPriority{
-					Hours:       gofakeit.Number(1, 10),
-					Minutes:     gofakeit.Number(1, 59),
-					Description: "SLA for None",
+					Hours:       ptr(gofakeit.Number(1, 10)),
+					Minutes:     ptr(gofakeit.Number(1, 59)),
+					Description: ptr("SLA for None"),
 				})
 
 				for _, inbox := range inboxes.Inboxes {
@@ -529,7 +539,7 @@ func generateData(
 						Inbox: &models.EntityRef{
 							ID: inbox.ID,
 						},
-						Condition: models.SLAConditionOptionEqual,
+						Condition: ptr(models.SLAConditionOptionEqual),
 					})
 
 					if len(resp.Included.SLAInboxes) > 4 {
@@ -542,7 +552,7 @@ func generateData(
 						Company: &models.EntityRef{
 							ID: company.ID,
 						},
-						Condition: models.SLAConditionOptionEqual,
+						Condition: ptr(models.SLAConditionOptionEqual),
 					})
 
 					if len(resp.Included.SLACompanies) > 4 {
@@ -555,7 +565,7 @@ func generateData(
 						Customer: &models.EntityRef{
 							ID: customer.ID,
 						},
-						Condition: models.SLAConditionOptionEqual,
+						Condition: ptr(models.SLAConditionOptionEqual),
 					})
 
 					if len(resp.Included.SLACustomers) > 3 {
@@ -568,7 +578,7 @@ func generateData(
 						Tag: &models.EntityRef{
 							ID: tag.ID,
 						},
-						Condition: models.SLAConditionOptionEqual,
+						Condition: ptr(models.SLAConditionOptionEqual),
 					})
 
 					if len(resp.Included.SLATags) > 6 {

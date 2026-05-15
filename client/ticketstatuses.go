@@ -20,8 +20,8 @@ func NewTicketStatusService(client *Client) *TicketStatusService {
 }
 
 // Get retrieves a ticketstatus by ID
-func (s *TicketStatusService) Get(ctx context.Context, id int) (*models.TicketStatusResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *TicketStatusService) Get(ctx context.Context, id int, params url.Values) (*models.TicketStatusResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of ticketstatuses with optional filters
