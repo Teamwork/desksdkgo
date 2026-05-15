@@ -20,8 +20,8 @@ func NewCustomerService(client *Client) *CustomerService {
 }
 
 // Get retrieves a customer by ID
-func (s *CustomerService) Get(ctx context.Context, id int) (*models.CustomerResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *CustomerService) Get(ctx context.Context, id int, params url.Values) (*models.CustomerResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of customers with optional filters

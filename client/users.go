@@ -20,8 +20,8 @@ func NewUserService(client *Client) *UserService {
 }
 
 // Get retrieves a user by ID
-func (s *UserService) Get(ctx context.Context, id int) (*models.UserResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *UserService) Get(ctx context.Context, id int, params url.Values) (*models.UserResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of users with optional filters

@@ -3,12 +3,12 @@ package models
 // TicketStatus related types
 type TicketStatus struct {
 	BaseEntity
-	Code         string `json:"code"`
-	Name         string `json:"name"`
-	DisplayOrder int    `json:"displayOrder"`
-	IsCustom     bool   `json:"isCustom"`
-	Color        string `json:"color"`
-	Icon         string `json:"icon"`
+	Code         *string `json:"code,omitempty"`
+	Name         *string `json:"name,omitempty"`
+	DisplayOrder *int    `json:"displayOrder,omitempty"`
+	IsCustom     *bool   `json:"isCustom,omitempty"`
+	Color        *string `json:"color,omitempty"`
+	Icon         *string `json:"icon,omitempty"`
 }
 
 type TicketStatusesResponse struct {

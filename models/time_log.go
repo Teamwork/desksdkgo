@@ -5,15 +5,15 @@ import "time"
 // TimeLog related types
 type TimeLog struct {
 	BaseEntity
-	Billable            bool      `json:"billable"`
-	Description         string    `json:"description"`
-	Date                time.Time `json:"date"`
-	Seconds             int       `json:"seconds"`
-	TimezoneOffset      int       `json:"timezoneOffset"`
-	TimelogsID          any       `json:"timelogs_id"`
-	AssignToCurrentUser bool      `json:"assignToCurrentUser"`
-	Ticket              EntityRef `json:"ticket"`
-	User                EntityRef `json:"user"`
+	Billable            *bool      `json:"billable,omitempty"`
+	Description         *string    `json:"description,omitempty"`
+	Date                *time.Time `json:"date,omitempty"`
+	Seconds             *int       `json:"seconds,omitempty"`
+	TimezoneOffset      *int       `json:"timezoneOffset,omitempty"`
+	TimelogsID          any        `json:"timelogs_id"`
+	AssignToCurrentUser *bool      `json:"assignToCurrentUser,omitempty"`
+	Ticket              EntityRef  `json:"ticket"`
+	User                EntityRef  `json:"user"`
 }
 
 type TimeLogsResponse struct {

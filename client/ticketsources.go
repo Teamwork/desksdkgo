@@ -20,8 +20,8 @@ func NewTicketSourceService(client *Client) *TicketSourceService {
 }
 
 // Get retrieves a ticketsource by ID
-func (s *TicketSourceService) Get(ctx context.Context, id int) (*models.TicketSourceResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *TicketSourceService) Get(ctx context.Context, id int, params url.Values) (*models.TicketSourceResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of ticketsources with optional filters

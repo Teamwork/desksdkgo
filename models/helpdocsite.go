@@ -2,52 +2,52 @@ package models
 
 type HelpDocSite struct {
 	BaseEntity
-	Name                 string           `json:"name"`
-	Description          string           `json:"description"`
-	MetaSiteDescription  string           `json:"metaSiteDescription"`
-	Subdomain            string           `json:"subdomain"`
-	ContactFormEnabled   bool             `json:"contactFormEnabled"`
-	ShowDateLastModified bool             `json:"showDateLastModified"`
-	CustomDomain         string           `json:"customDomain"`
-	CustomStyleSheet     string           `json:"customStyleSheet"`
-	HomePageLinkEnabled  bool             `json:"homePageLinkEnabled"`
-	HomePageLinkText     string           `json:"homePageLinkText"`
-	HomePageURL          string           `json:"homePageURL"`
-	HTMLHeadCode         string           `json:"htmlHeadCode"`
-	LogoImage            string           `json:"logoImage"`
-	Favicon              string           `json:"favicon"`
-	TouchIcon            string           `json:"touchIcon"`
-	PublicSiteEnabled    bool             `json:"publicSiteEnabled"`
-	SendEmailsToInboxID  int              `json:"sendEmailsToInboxId"`
-	ShowOnHomePage       string           `json:"showOnHomePage"`
-	HeaderBGColor        string           `json:"headerBGColor"`
-	NavActiveColor       string           `json:"navActiveColor"`
-	NavTextColor         string           `json:"navTextColor"`
-	PageBGColor          string           `json:"pageBGColor"`
-	LinkColor            string           `json:"linkColor"`
-	TextColor            string           `json:"textColor"`
-	LanguageCode         string           `json:"languageCode"`
-	Password             string           `json:"password"`
-	ShowSocialIcons      bool             `json:"showSocialIcons"`
+	Name                 *string          `json:"name,omitempty"`
+	Description          *string          `json:"description,omitempty"`
+	MetaSiteDescription  *string          `json:"metaSiteDescription,omitempty"`
+	Subdomain            *string          `json:"subdomain,omitempty"`
+	ContactFormEnabled   *bool            `json:"contactFormEnabled,omitempty"`
+	ShowDateLastModified *bool            `json:"showDateLastModified,omitempty"`
+	CustomDomain         *string          `json:"customDomain,omitempty"`
+	CustomStyleSheet     *string          `json:"customStyleSheet,omitempty"`
+	HomePageLinkEnabled  *bool            `json:"homePageLinkEnabled,omitempty"`
+	HomePageLinkText     *string          `json:"homePageLinkText,omitempty"`
+	HomePageURL          *string          `json:"homePageURL,omitempty"`
+	HTMLHeadCode         *string          `json:"htmlHeadCode,omitempty"`
+	LogoImage            *string          `json:"logoImage,omitempty"`
+	Favicon              *string          `json:"favicon,omitempty"`
+	TouchIcon            *string          `json:"touchIcon,omitempty"`
+	PublicSiteEnabled    *bool            `json:"publicSiteEnabled,omitempty"`
+	SendEmailsToInboxID  *int             `json:"sendEmailsToInboxId,omitempty"`
+	ShowOnHomePage       *string          `json:"showOnHomePage,omitempty"`
+	HeaderBGColor        *string          `json:"headerBGColor,omitempty"`
+	NavActiveColor       *string          `json:"navActiveColor,omitempty"`
+	NavTextColor         *string          `json:"navTextColor,omitempty"`
+	PageBGColor          *string          `json:"pageBGColor,omitempty"`
+	LinkColor            *string          `json:"linkColor,omitempty"`
+	TextColor            *string          `json:"textColor,omitempty"`
+	LanguageCode         *string          `json:"languageCode,omitempty"`
+	Password             *string          `json:"password,omitempty"`
+	ShowSocialIcons      *bool            `json:"showSocialIcons,omitempty"`
 	DisqusShortname      any              `json:"disqusShortname"`
-	AuthenticationType   string           `json:"authenticationType"`
-	AuthenticationTypeID int              `json:"authenticationTypeId"`
-	EditMethod           string           `json:"editMethod"`
-	Stats                HelpDocSiteStats `json:"stats"`
-	SearchTemplate       string           `json:"searchTemplate"`
-	HomeTemplate         string           `json:"homeTemplate"`
-	HeadTemplate         string           `json:"headTemplate"`
-	FooterTemplate       string           `json:"footerTemplate"`
-	CategoryTemplate     string           `json:"categoryTemplate"`
-	ArticleTemplate      string           `json:"articleTemplate"`
+	AuthenticationType   *string          `json:"authenticationType,omitempty"`
+	AuthenticationTypeID *int             `json:"authenticationTypeId,omitempty"`
+	EditMethod           *string          `json:"editMethod,omitempty"`
+	Stats                *HelpDocSiteStats `json:"stats,omitempty"`
+	SearchTemplate       *string          `json:"searchTemplate,omitempty"`
+	HomeTemplate         *string          `json:"homeTemplate,omitempty"`
+	HeadTemplate         *string          `json:"headTemplate,omitempty"`
+	FooterTemplate       *string          `json:"footerTemplate,omitempty"`
+	CategoryTemplate     *string          `json:"categoryTemplate,omitempty"`
+	ArticleTemplate      *string          `json:"articleTemplate,omitempty"`
 	Contributors         []EntityRef      `json:"contributors"`
 }
 
 type HelpDocSiteStats struct {
-	ArticleCount     int `json:"articleCount"`
-	PublishedCount   int `json:"publishedCount"`
-	UnpublishedCount int `json:"unpublishedCount"`
-	DraftCount       int `json:"draftCount"`
+	ArticleCount     *int `json:"articleCount,omitempty"`
+	PublishedCount   *int `json:"publishedCount,omitempty"`
+	UnpublishedCount *int `json:"unpublishedCount,omitempty"`
+	DraftCount       *int `json:"draftCount,omitempty"`
 }
 
 type HelpDocSitesResponse struct {

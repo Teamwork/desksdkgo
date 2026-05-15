@@ -20,8 +20,8 @@ func NewTicketPriorityService(client *Client) *TicketPriorityService {
 }
 
 // Get retrieves a ticketpriority by ID
-func (s *TicketPriorityService) Get(ctx context.Context, id int) (*models.TicketPriorityResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *TicketPriorityService) Get(ctx context.Context, id int, params url.Values) (*models.TicketPriorityResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of ticketpriorityes with optional filters

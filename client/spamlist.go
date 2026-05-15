@@ -20,8 +20,8 @@ func NewSpamlistService(client *Client) *SpamlistService {
 }
 
 // Get retrieves a spamlist by ID
-func (s *SpamlistService) Get(ctx context.Context, id int) (*models.SpamlistResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *SpamlistService) Get(ctx context.Context, id int, params url.Values) (*models.SpamlistResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of spamlistes with optional filters

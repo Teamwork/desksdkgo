@@ -25,10 +25,10 @@ const (
 // SLA represents a SLA in the system
 type SLA struct {
 	BaseEntity
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	DisplayOrder     int         `json:"displayOrder"`
-	Enabled          bool        `json:"enabled"`
+	Name             *string     `json:"name,omitempty"`
+	Description      *string     `json:"description,omitempty"`
+	DisplayOrder     *int        `json:"displayOrder,omitempty"`
+	Enabled          *bool       `json:"enabled,omitempty"`
 	BusinessHour     *EntityRef  `json:"businesshours,omitempty"`
 	Customers        []EntityRef `json:"slacustomers"`
 	Companies        []EntityRef `json:"slacompanies"`
@@ -42,43 +42,43 @@ type SLA struct {
 
 type SLANotification struct {
 	BaseEntity
-	Condition          SLANotificationConditionType `json:"condition" db:"condition"`
-	Type               SLANotificationType          `json:"type"`
-	Duration           int                          `json:"duration"`
-	User               *EntityRef                   `json:"user,omitempty"`
-	NotifyAssignedUser bool                         `json:"notifyAssignedUser"`
+	Condition          *SLANotificationConditionType `json:"condition,omitempty" db:"condition"`
+	Type               *SLANotificationType          `json:"type,omitempty"`
+	Duration           *int                          `json:"duration,omitempty"`
+	User               *EntityRef                    `json:"user,omitempty"`
+	NotifyAssignedUser *bool                         `json:"notifyAssignedUser,omitempty"`
 }
 
 type SLATicketPriority struct {
 	BaseEntity
-	Hours          int        `json:"hours"`
-	Minutes        int        `json:"minutes"`
-	Description    string     `json:"description"`
+	Hours          *int       `json:"hours,omitempty"`
+	Minutes        *int       `json:"minutes,omitempty"`
+	Description    *string    `json:"description,omitempty"`
 	TicketPriority *EntityRef `json:"priority"`
 }
 
 type SLACustomer struct {
 	BaseEntity
-	Customer  *EntityRef         `json:"customer"`
-	Condition SLAConditionOption `json:"conditionoption" db:"conditionoption"`
+	Customer  *EntityRef          `json:"customer"`
+	Condition *SLAConditionOption `json:"conditionoption,omitempty" db:"conditionoption"`
 }
 
 type SLACompany struct {
 	BaseEntity
-	Company   *EntityRef         `json:"company"`
-	Condition SLAConditionOption `json:"conditionoption" db:"conditionoption"`
+	Company   *EntityRef          `json:"company"`
+	Condition *SLAConditionOption `json:"conditionoption,omitempty" db:"conditionoption"`
 }
 
 type SLAInbox struct {
 	BaseEntity
-	Inbox     *EntityRef         `json:"inbox"`
-	Condition SLAConditionOption `json:"conditionoption" db:"conditionoption"`
+	Inbox     *EntityRef          `json:"inbox"`
+	Condition *SLAConditionOption `json:"conditionoption,omitempty" db:"conditionoption"`
 }
 
 type SLATag struct {
 	BaseEntity
-	Tag       *EntityRef         `json:"tag"`
-	Condition SLAConditionOption `json:"conditionoption" db:"conditionoption"`
+	Tag       *EntityRef          `json:"tag"`
+	Condition *SLAConditionOption `json:"conditionoption,omitempty" db:"conditionoption"`
 }
 
 // SLAsResponse represents the response for a list of slas

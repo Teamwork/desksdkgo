@@ -18,16 +18,16 @@ const (
 type File struct {
 	BaseEntity
 	// Standard mime type of the file
-	MIMEType string `json:"mimeType"`
+	MIMEType *string `json:"mimeType,omitempty"`
 
 	// The file name
-	Filename string `json:"filename"`
+	Filename *string `json:"filename,omitempty"`
 
 	// Determine where the attachment was added: attachment or attachment-inline
-	Disposition Disposition `json:"disposition"`
+	Disposition *Disposition `json:"disposition,omitempty"`
 
 	// Type is always 'attachment'
-	Type FileType `json:"type"`
+	Type *FileType `json:"type,omitempty"`
 }
 
 type FilesResponse struct {
@@ -40,7 +40,7 @@ type FilesResponse struct {
 // RefResponse is the data gotten back from the /files/ref endpoint to then post
 // to s3
 type FileResponse struct {
-	URL    string     `json:"url"`
+	URL    *string    `json:"url,omitempty"`
 	Params FileParams `json:"params"`
 	File   File       `json:"file"`
 }

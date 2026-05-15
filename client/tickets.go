@@ -29,8 +29,8 @@ func NewTicketService(client *Client) *TicketService {
 }
 
 // Get retrieves a ticket by ID
-func (s *TicketService) Get(ctx context.Context, id int) (*models.TicketResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *TicketService) Get(ctx context.Context, id int, params url.Values) (*models.TicketResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of tickets with optional filters

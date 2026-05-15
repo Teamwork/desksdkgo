@@ -20,8 +20,8 @@ func NewBusinessHourService(client *Client) *BusinessHourService {
 }
 
 // Get retrieves a businesshour by ID
-func (s *BusinessHourService) Get(ctx context.Context, id int) (*models.BusinessHourResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *BusinessHourService) Get(ctx context.Context, id int, params url.Values) (*models.BusinessHourResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of businesshours with optional filters

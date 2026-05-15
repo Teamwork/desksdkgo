@@ -19,7 +19,7 @@ type BaseEntity struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 	CreatedBy *UserRef   `json:"createdBy,omitempty"`
 	UpdatedBy *UserRef   `json:"updatedBy,omitempty"`
-	State     State      `json:"state"`
+	State     *State     `json:"state,omitempty"`
 }
 
 type UserRef struct {

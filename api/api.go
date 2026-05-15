@@ -11,7 +11,7 @@ import (
 
 // Service defines the interface that all service types must implement
 type Service[T any, R any, L any] interface {
-	Get(ctx context.Context, id int) (*R, error)
+	Get(ctx context.Context, id int, params url.Values) (*R, error)
 	List(ctx context.Context, params url.Values) (*L, error)
 	Create(ctx context.Context, item *T) (*R, error)
 	Update(ctx context.Context, id int, item *T) (*R, error)
@@ -27,7 +27,7 @@ func Call[T any, R any, L any](ctx context.Context, service Service[T, R, L], ac
 		if id == 0 {
 			log.Fatal("ID is required for get action")
 		}
-		item, err := service.Get(ctx, id)
+		item, err := service.Get(ctx, id, nil)
 		if err != nil {
 			log.Fatal(err)
 		}

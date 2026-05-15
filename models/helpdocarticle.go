@@ -3,17 +3,17 @@ package models
 type HelpDocArticle struct {
 	BaseEntity
 	Helpdocsite     EntityRef `json:"helpdocsite"`
-	Title           string    `json:"title"`
-	Slug            string    `json:"slug"`
-	Description     string    `json:"description"`
-	OldURL          string    `json:"oldURL"`
-	Popularity      int       `json:"popularity"`
-	DisqusEnabled   bool      `json:"disqusEnabled"`
-	IsPrivate       bool      `json:"isPrivate"`
-	EditMethod      string    `json:"editMethod"`
-	DisplayOrder    int       `json:"displayOrder"`
-	Status          string    `json:"status"`
-	Contents        string    `json:"contents"`
+	Title           *string   `json:"title,omitempty"`
+	Slug            *string   `json:"slug,omitempty"`
+	Description     *string   `json:"description,omitempty"`
+	OldURL          *string   `json:"oldURL,omitempty"`
+	Popularity      *int      `json:"popularity,omitempty"`
+	DisqusEnabled   *bool     `json:"disqusEnabled,omitempty"`
+	IsPrivate       *bool     `json:"isPrivate,omitempty"`
+	EditMethod      *string   `json:"editMethod,omitempty"`
+	DisplayOrder    *int      `json:"displayOrder,omitempty"`
+	Status          *string   `json:"status,omitempty"`
+	Contents        *string   `json:"contents,omitempty"`
 	Categories      []int     `json:"categories"`
 	RelatedArticles []int     `json:"relatedArticles,omitempty"`
 }

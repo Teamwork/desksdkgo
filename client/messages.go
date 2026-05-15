@@ -27,8 +27,8 @@ func NewMessageService(client *Client) *MessageService {
 }
 
 // Get retrieves a message by ID
-func (s *MessageService) Get(ctx context.Context, id int) (*models.MessageResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *MessageService) Get(ctx context.Context, id int, params url.Values) (*models.MessageResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of messages with optional filters

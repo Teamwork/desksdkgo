@@ -3,9 +3,9 @@ package models
 // TicketPriority related types
 type TicketPriority struct {
 	BaseEntity
-	Name         string `json:"name"`
-	Color        string `json:"color"`
-	DisplayOrder int    `json:"displayOrder"`
+	Name         *string `json:"name,omitempty"`
+	Color        *string `json:"color,omitempty"`
+	DisplayOrder *int    `json:"displayOrder,omitempty"`
 }
 
 type TicketPrioritiesResponse struct {

@@ -20,8 +20,8 @@ func NewSLAService(client *Client) *SLAService {
 }
 
 // Get retrieves a sla by ID
-func (s *SLAService) Get(ctx context.Context, id int) (*models.SLAResponse, error) {
-	return s.Service.Get(ctx, id)
+func (s *SLAService) Get(ctx context.Context, id int, params url.Values) (*models.SLAResponse, error) {
+	return s.Service.Get(ctx, id, params)
 }
 
 // List retrieves a list of slas with optional filters
