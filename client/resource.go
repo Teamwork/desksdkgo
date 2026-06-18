@@ -60,7 +60,7 @@ func (s *Service[T, L]) Get(ctx context.Context, id int, params url.Values) (*T,
 		s.logError("request failed", slog.Any("error", err), slog.String("method", http.MethodGet), slog.String("url", req.URL.String()))
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
@@ -100,7 +100,7 @@ func (s *Service[T, L]) List(ctx context.Context, params url.Values) (*L, error)
 		s.logError("request failed", slog.Any("error", err), slog.String("method", http.MethodGet), slog.String("url", req.URL.String()))
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
@@ -146,7 +146,7 @@ func (s *Service[T, L]) Create(ctx context.Context, resource *T) (*T, error) {
 		s.logError("request failed", slog.Any("error", err), slog.String("method", http.MethodPost), slog.String("url", req.URL.String()))
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
 		b, err := io.ReadAll(resp.Body)
@@ -209,7 +209,7 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 		s.logError("request failed", slog.Any("error", err), slog.String("method", method), slog.String("url", req.URL.String()))
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)

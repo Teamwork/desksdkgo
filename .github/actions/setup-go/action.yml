@@ -1,0 +1,23 @@
+name: Setup Go
+description: Configure git auth and install Go
+
+inputs:
+  gh-token:
+    description: GitHub token for private module access
+    required: true
+  cache:
+    description: Whether to enable Go module caching
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Setup git
+      shell: bash
+      run: git config --global url."https://${{ inputs.gh-token }}@github.com/".insteadOf "https://github.com/"
+
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+        cache: ${{ inputs.cache }}

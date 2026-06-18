@@ -32,7 +32,9 @@ func Call[T any, R any, L any](ctx context.Context, service Service[T, R, L], ac
 			log.Fatal(err)
 		}
 
-		enc.Encode(item)
+		if err := enc.Encode(item); err != nil {
+			log.Fatal(err)
+		}
 
 	case "list":
 		items, err := service.List(ctx, nil)
@@ -40,7 +42,9 @@ func Call[T any, R any, L any](ctx context.Context, service Service[T, R, L], ac
 			log.Fatal(err)
 		}
 
-		enc.Encode(items)
+		if err := enc.Encode(items); err != nil {
+			log.Fatal(err)
+		}
 
 	case "create":
 		item := createItem()
@@ -50,7 +54,9 @@ func Call[T any, R any, L any](ctx context.Context, service Service[T, R, L], ac
 			return
 		}
 
-		enc.Encode(created)
+		if err := enc.Encode(created); err != nil {
+			log.Fatal(err)
+		}
 
 	case "update":
 		if id == 0 {
@@ -62,7 +68,9 @@ func Call[T any, R any, L any](ctx context.Context, service Service[T, R, L], ac
 			log.Print(err)
 			return
 		}
-		enc.Encode(updated)
+		if err := enc.Encode(updated); err != nil {
+			log.Fatal(err)
+		}
 
 	default:
 		log.Fatalf("Unsupported action: %s", action)

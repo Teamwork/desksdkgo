@@ -74,7 +74,7 @@ func (s *MessageService) CreateForTicket(ctx context.Context, ticketID int, mess
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
 		b, err := io.ReadAll(resp.Body)
