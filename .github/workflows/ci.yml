@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  GOPRIVATE: github.com/teamwork/*
+  LANG: en_US.UTF-8
+  GO_VERSION: "1.26"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-go
+        with:
+          gh-token: ${{ secrets.GH_TOKEN }}
+          cache: "false"
+
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: latest
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-go
+        with:
+          gh-token: ${{ secrets.GH_TOKEN }}
+
+      - name: Run tests
+        run: go test -race -count=1 ./...
