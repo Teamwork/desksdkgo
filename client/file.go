@@ -93,7 +93,9 @@ func (s *FileService) Upload(ctx context.Context, file *models.FileResponse, f [
 		return fmt.Errorf("copy file data: %w", err)
 	}
 
-	writer.Close()
+	if err := writer.Close(); err != nil {
+		return fmt.Errorf("close multipart writer: %w", err)
+	}
 
 	uploadURL := ""
 	if file.URL != nil {
@@ -110,7 +112,7 @@ func (s *FileService) Upload(ctx context.Context, file *models.FileResponse, f [
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)

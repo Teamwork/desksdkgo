@@ -122,7 +122,9 @@ func generateData(
 				}
 				enc := json.NewEncoder(os.Stdout)
 				enc.SetIndent("", "  ")
-				enc.Encode(resp)
+				if err := enc.Encode(resp); err != nil {
+					log.Fatalf("Failed to encode response: %v", err)
+				}
 				return
 			}
 			api.Call(ctx, c.Tickets, action, id, func() *models.TicketResponse {
@@ -328,7 +330,9 @@ func generateData(
 				log.Fatalf("Failed to upload file: %v", err)
 			}
 
-			enc.Encode(resp)
+			if err := enc.Encode(resp); err != nil {
+				log.Fatalf("Failed to encode response: %v", err)
+			}
 		case "spamlists":
 			api.Call(ctx, c.Spamlists, action, id, func() *models.SpamlistResponse {
 				resp := &models.SpamlistResponse{Spamlist: models.Spamlist{
