@@ -1,5 +1,15 @@
 package models
 
+type SearchHelpdocsFilter struct {
+	Search     string   `qs:"search,omitempty"`
+	SiteID     int64    `qs:"siteId,omitempty"`
+	Status     string   `qs:"status,omitempty"`
+	CategoryID int64    `qs:"categoryId,omitempty"`
+	Page       int      `qs:"page,omitempty"`
+	PageSize   int      `qs:"pageSize,omitempty"`
+	Includes   []string `qs:"includes,omitempty"`
+}
+
 type HelpDocArticle struct {
 	BaseEntity
 	Helpdocsite     EntityRef `json:"helpdocsite"`
