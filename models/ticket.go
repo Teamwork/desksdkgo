@@ -69,13 +69,13 @@ type Task struct {
 			ID   int    `json:"id"`
 			Type string `json:"type"`
 		} `json:"project"`
-		StateChanged bool   `json:"stateChanged"`
-		Status       string `json:"status"`
+		StateChanged bool `json:"stateChanged"`
+		Status       any  `json:"status"` // Can be a name ("completed") or a status id (3)
 		Task         struct {
 			Completed    bool   `json:"completed"`
 			ID           int    `json:"id"`
 			StateChanged bool   `json:"stateChanged"`
-			Status       string `json:"status"`
+			Status       any    `json:"status"` // Can be a name ("completed") or a status id (3)
 			Type         string `json:"type"`
 		} `json:"task"`
 	} `json:"meta"`

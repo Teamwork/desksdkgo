@@ -4,6 +4,8 @@ import (
 	"context"
 	"net/http"
 	"testing"
+
+	"github.com/teamwork/desksdkgo/models"
 )
 
 func TestTicketServiceLinkTask(t *testing.T) {
@@ -89,5 +91,70 @@ func TestTicketServiceLinkTaskUnexpectedStatus(t *testing.T) {
 	err := client.Tickets.LinkTask(context.Background(), 123, 456)
 	if err == nil {
 		t.Fatal("expected error for 400 response, got nil")
+	}
+}
+
+func TestTicketServiceSearchDecodesTaskStatuses(t *testing.T) {
+	// The API returns `status` inside linked-task metadata as either a status
+	// name ("completed") or a status id (3), so both shapes must decode. The
+	// same response mixes integer and float spam_score values.
+	body := `{"tickets":[
+		{"id":2143999,"type":{"id":13630,"type":"tickettypes"},"status":{"id":4,"type":"ticketstatuses"},"spam_score":0,
+		 "tasks":[{"id":28423,"type":"tasktickets","meta":{"completed":true,"project":{"id":349856,"type":"projects"},"stateChanged":false,"status":"completed","task":{"completed":true,"id":26948402,"stateChanged":false,"status":"completed","type":"tasks"}}}],
+		 "project":{"id":349856,"type":"projects"},"suggestions":{},"state":"active","sharedWith":[]},
+		{"id":1894825,"spam_score":0.7,
+		 "tasks":[{"id":8285,"type":"sites","meta":{"completed":false,"project":{"id":349856,"type":"oauth2tokens"},"stateChanged":false,"status":1,"task":{"completed":false,"id":26150701,"stateChanged":false,"status":1,"type":"sentiments"}}}],
+		 "suggestions":{},"state":"active"}
+	]}`
+
+	mockTransport := NewMockRoundTripper()
+	mockTransport.AddResponse(http.MethodGet, "/search/tickets.json", http.StatusOK, body)
+
+	client := NewClient("https://example.com", WithHTTPClient(&http.Client{Transport: mockTransport}))
+
+	resp, err := client.Tickets.Search(context.Background(), &models.SearchTicketsFilter{
+		Customers: []int64{357836},
+	})
+	if err != nil {
+		t.Fatalf("Search() returned error: %v", err)
+	}
+
+	if len(resp.Tickets) != 2 {
+		t.Fatalf("expected 2 tickets, got %d", len(resp.Tickets))
+	}
+
+	named := resp.Tickets[0].Tasks
+	if len(named) != 1 {
+		t.Fatalf("expected 1 task on first ticket, got %d", len(named))
+	}
+	if named[0].Meta.Project.ID != 349856 {
+		t.Errorf("expected project id 349856, got %d", named[0].Meta.Project.ID)
+	}
+	if named[0].Meta.Status != "completed" {
+		t.Errorf("expected status \"completed\", got %v", named[0].Meta.Status)
+	}
+	if named[0].Meta.Task.ID != 26948402 {
+		t.Errorf("expected task id 26948402, got %d", named[0].Meta.Task.ID)
+	}
+
+	if resp.Tickets[0].SpamScore == nil || *resp.Tickets[0].SpamScore != 0 {
+		t.Errorf("expected integer spam_score 0, got %v", resp.Tickets[0].SpamScore)
+	}
+	if resp.Tickets[1].SpamScore == nil || *resp.Tickets[1].SpamScore != 0.7 {
+		t.Errorf("expected float spam_score 0.7, got %v", resp.Tickets[1].SpamScore)
+	}
+
+	numbered := resp.Tickets[1].Tasks
+	if len(numbered) != 1 {
+		t.Fatalf("expected 1 task on second ticket, got %d", len(numbered))
+	}
+	if numbered[0].Meta.Task.ID != 26150701 {
+		t.Errorf("expected task id 26150701, got %d", numbered[0].Meta.Task.ID)
+	}
+	if got, ok := numbered[0].Meta.Status.(float64); !ok || got != 1 {
+		t.Errorf("expected status 1, got %v", numbered[0].Meta.Status)
+	}
+	if got, ok := numbered[0].Meta.Task.Status.(float64); !ok || got != 1 {
+		t.Errorf("expected inner task status 1, got %v", numbered[0].Meta.Task.Status)
 	}
 }
