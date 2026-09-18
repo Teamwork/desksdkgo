@@ -18,23 +18,24 @@ type Client struct {
 	middleware []MiddlewareFunc
 
 	// Services
-	BusinessHours    *BusinessHourService
-	Companies        *CompanyService
-	Customers        *CustomerService
-	Files            *FileService
-	HelpDocArticles  *HelpDocArticleService
-	HelpDocSites     *HelpDocSiteService
-	Inboxes          *InboxService
-	Messages         *MessageService
-	SLAs             *SLAService
-	Spamlists        *SpamlistService
-	Tags             *TagService
-	TicketPriorities *TicketPriorityService
-	Tickets          *TicketService
-	TicketSources    *TicketSourceService
-	TicketStatuses   *TicketStatusService
-	TicketTypes      *TicketTypeService
-	Users            *UserService
+	BusinessHours     *BusinessHourService
+	Companies         *CompanyService
+	Customers         *CustomerService
+	Files             *FileService
+	HelpDocArticles   *HelpDocArticleService
+	HelpDocCategories *HelpDocCategoryService
+	HelpDocSites      *HelpDocSiteService
+	Inboxes           *InboxService
+	Messages          *MessageService
+	SLAs              *SLAService
+	Spamlists         *SpamlistService
+	Tags              *TagService
+	TicketPriorities  *TicketPriorityService
+	Tickets           *TicketService
+	TicketSources     *TicketSourceService
+	TicketStatuses    *TicketStatusService
+	TicketTypes       *TicketTypeService
+	Users             *UserService
 }
 
 // MiddlewareFunc represents a middleware function that can modify requests before they are sent
@@ -108,6 +109,7 @@ func NewClient(baseURL string, opts ...Option) *Client {
 	client.Customers = NewCustomerService(client)
 	client.Files = NewFileService(client)
 	client.HelpDocArticles = NewHelpDocArticleService(client)
+	client.HelpDocCategories = NewHelpDocCategoryService(client)
 	client.HelpDocSites = NewHelpDocSiteService(client)
 	client.Inboxes = NewInboxService(client)
 	client.Messages = NewMessageService(client)

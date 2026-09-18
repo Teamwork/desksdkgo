@@ -219,7 +219,10 @@ func (s *Service[T, L]) Update(ctx context.Context, id int, resource *T) (*T, er
 			slog.String("url", req.URL.String()),
 			slog.String("response_body", string(body)),
 		)
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		// The body carries which field the API rejected and why, the same as
+		// Create reports. Without it a validation failure reaches the caller as a
+		// bare status with nothing to act on.
+		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}
 
 	var updatedResource T
